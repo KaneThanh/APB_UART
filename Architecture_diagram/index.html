@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kiến trúc UART APB — DE2-115</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:#23344b;background:#f1f4f8}
+header{background:white;padding:18px 24px;border-bottom:1px solid #d6dfeb}h1{font-size:23px;margin:0 0 8px}p{margin:0;font-size:14px;color:#526278}
+nav{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:14px 24px;background:#e8eef6}select,button{font:inherit;padding:8px;border:1px solid #9cadc4;background:white;border-radius:5px}select{max-width:100%}a{color:#1c579a}label{font-size:14px}.canvas{height:calc(100vh - 164px);min-height:400px;overflow:auto;padding:24px;background:white}.canvas img{display:block;max-width:none;height:auto}.downloads{margin-left:auto;display:flex;gap:18px;font-size:14px}
+</style>
+<header><h1>Kiến trúc UART APB — DE2-115</h1><p>19 trang · Kiến trúc RTL + Nios II và flowchart CPU · Bản XML chỉnh sửa được trong draw.io</p></header>
+<nav><select id="page" aria-label="Chọn trang"><option value="01">01 BOARD - SYSTEM_ARCHITECTURE</option><option value="02">02 BOARD - TOP_INPUT_OUTPUT</option><option value="03">03 HOST - APB_TRANSACTION_MASTER</option><option value="04">04 UART - TOP_INPUT_OUTPUT</option><option value="05">05 UART - SIMPLE_DATAPATH</option><option value="06">06 APB - SLAVE_INTERFACE</option><option value="07">07 APB - REGISTERS_INTERFACE</option><option value="08">08 APB - REGISTERS_DATAPATH</option><option value="09">09 TX - FSM_INTERFACE</option><option value="10">10 TX - DATAPATH</option><option value="11">11 RX - FSM_INTERFACE</option><option value="12">12 RX - DATAPATH</option><option value="13">13 COMMON - RESET_SYNC</option><option value="14">14 CPU - NIOS_SYSTEM_ARCHITECTURE</option><option value="15">15 CPU - BOOT_AND_MAIN_LOOP</option><option value="16">16 CPU - RX_TX_DATA_FLOW</option><option value="17">17 CPU - SW_KEY_AND_REPORT</option><option value="18">18 CPU - APPLY_RESUME_CONFIG_FSM</option><option value="19">19 CPU - LCD_RX_TEXT_AND_REFRESH</option></select><button id="fit">Vừa màn hình</button><label>Zoom <input id="zoom" type="range" min="20" max="180" value="60"> <span id="percent"></span></label><div class="downloads"><a href="UART_APB_ARCHITECTURE.drawio.xml" download>XML</a><a href="UART_APB_ARCHITECTURE.drawio" download>Draw.io</a><a id="svg" href="previews/page_01.svg" target="_blank">SVG</a><a id="png" href="previews/page_01.png" target="_blank">PNG</a></div></nav>
+<div class="canvas" id="canvas"><img id="image" src="previews/page_01.svg" alt="Sơ đồ UART"></div>
+<script>
+const page=document.getElementById('page'),picture=document.getElementById('image'),zoom=document.getElementById('zoom'),canvas=document.getElementById('canvas');let nativeWidth=2300;
+function scale(){picture.style.width=Math.round(nativeWidth*zoom.value/100)+'px';document.getElementById('percent').textContent=zoom.value+'%'}
+function fit(){zoom.value=Math.max(20,Math.min(180,Math.floor((canvas.clientWidth-48)/nativeWidth*100)));scale()}
+function selectPage(){const stem='previews/page_'+page.value;picture.src=stem+'.svg';document.getElementById('svg').href=stem+'.svg';document.getElementById('png').href=stem+'.png';canvas.scrollTop=0;canvas.scrollLeft=0;location.hash=page.value}
+picture.onload=()=>{nativeWidth=picture.naturalWidth||2300;fit()};zoom.oninput=scale;document.getElementById('fit').onclick=fit;page.onchange=selectPage;
+const initial=location.hash.slice(1)||'01';if([...page.options].some(o=>o.value===initial)){page.value=initial;selectPage()}
+</script></html>
