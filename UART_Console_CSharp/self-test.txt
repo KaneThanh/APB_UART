@@ -1,0 +1,1 @@
+PASS: input encoding, data width guard, UI initialization; no COM opened.
