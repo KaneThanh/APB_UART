@@ -1,0 +1,27 @@
+	component peripheral_check is
+		port (
+			board_rx        : in  std_logic                     := 'X';             -- rx
+			board_cts_n     : in  std_logic                     := 'X';             -- cts_n
+			board_tx        : out std_logic;                                        -- tx
+			board_rts_n     : out std_logic;                                        -- rts_n
+			board_switches  : in  std_logic_vector(7 downto 0)  := (others => 'X'); -- switches
+			board_keys_n    : in  std_logic_vector(2 downto 0)  := (others => 'X'); -- keys_n
+			board_leds      : out std_logic_vector(1 downto 0);                     -- leds
+			board_lcd_data  : out std_logic_vector(7 downto 0);                     -- lcd_data
+			board_lcd_rs    : out std_logic;                                        -- lcd_rs
+			board_lcd_rw    : out std_logic;                                        -- lcd_rw
+			board_lcd_en    : out std_logic;                                        -- lcd_en
+			board_lcd_on    : out std_logic;                                        -- lcd_on
+			board_lcd_blon  : out std_logic;                                        -- lcd_blon
+			bus_address     : in  std_logic_vector(12 downto 0) := (others => 'X'); -- address
+			bus_read        : in  std_logic                     := 'X';             -- read
+			bus_write       : in  std_logic                     := 'X';             -- write
+			bus_writedata   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			bus_byteenable  : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
+			bus_readdata    : out std_logic_vector(31 downto 0);                    -- readdata
+			bus_waitrequest : out std_logic;                                        -- waitrequest
+			clk_clk         : in  std_logic                     := 'X';             -- clk
+			reset_reset_n   : in  std_logic                     := 'X'              -- reset_n
+		);
+	end component peripheral_check;
+

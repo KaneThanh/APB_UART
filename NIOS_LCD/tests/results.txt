@@ -1,0 +1,7 @@
+PASS firmware: boot, echo, bad metadata drop, LCD truncation/CRLF/gap, register selection, single report per edge, clear, backpressure, apply/resume and timeout
+PASS bridge: setup/access, wait states, read/write strobes, PSLVERR and reset
+tb_bridge.sv:38: $finish called at 310 (1s)
+PASS peripheral: real UART APB configuration, bus error, LCD register addressing, IO sync and TX completion
+tb_peripheral.sv:39: $finish called at 101260 (1s)
+PASS LCD: power-up init, EN width, both row addresses and character data
+tb_lcd.sv:24: $finish called at 255253500000 (1ps)

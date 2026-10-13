@@ -1,0 +1,116 @@
+Archive member included to satisfy reference by file (symbol)
+
+d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+                              C:\Users\ADMIN\AppData\Local\Temp\cch4DDKA.o (__umodsi3)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ram              0x00010000         0x00010000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+
+.entry          0x00010000        0x4
+ *(.entry)
+ .entry         0x00010000        0x4 C:\Users\ADMIN\AppData\Local\Temp\ccnyxBLu.o
+                0x00010000                _start
+
+.exceptions     0x00010020        0x4
+ *(.exceptions)
+ .exceptions    0x00010020        0x4 C:\Users\ADMIN\AppData\Local\Temp\ccnyxBLu.o
+
+.text           0x00010024      0xb31
+ *(.text.start)
+ .text.start    0x00010024       0x3c C:\Users\ADMIN\AppData\Local\Temp\ccnyxBLu.o
+ *(.text*)
+ .text          0x00010060        0x0 C:\Users\ADMIN\AppData\Local\Temp\ccnyxBLu.o
+ .text          0x00010060       0x20 C:\Users\ADMIN\AppData\Local\Temp\ccssP54W.o
+                0x00010060                hw_read
+                0x00010070                hw_write
+ .text.startup  0x00010080       0x14 C:\Users\ADMIN\AppData\Local\Temp\ccssP54W.o
+                0x00010080                main
+ .text          0x00010094      0x8fc C:\Users\ADMIN\AppData\Local\Temp\cch4DDKA.o
+                0x00010298                app_init
+                0x0001035c                app_step
+ .text          0x00010990      0x1b4 d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+                0x00010990                __divsi3
+                0x00010a10                __modsi3
+                0x00010a84                __udivsi3
+                0x00010ae8                __umodsi3
+ *(.rodata*)
+ .rodata.str1.4
+                0x00010b44       0x11 C:\Users\ADMIN\AppData\Local\Temp\cch4DDKA.o
+
+.data           0x00010b55        0x0
+ *(.data*)
+ .data          0x00010b55        0x0 C:\Users\ADMIN\AppData\Local\Temp\ccnyxBLu.o
+ .data          0x00010b55        0x0 C:\Users\ADMIN\AppData\Local\Temp\ccssP54W.o
+ .data          0x00010b55        0x0 C:\Users\ADMIN\AppData\Local\Temp\cch4DDKA.o
+ .data          0x00010b55        0x0 d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+ *(.sdata*)
+                0x00010b58                        . = ALIGN (0x4)
+                0x00018b48                        _gp = (. + 0x7ff0)
+
+.bss            0x00010b58      0x264
+                0x00010b58                        __bss_start = .
+ *(.bss*)
+ .bss           0x00010b58        0x0 C:\Users\ADMIN\AppData\Local\Temp\ccnyxBLu.o
+ .bss           0x00010b58        0x0 C:\Users\ADMIN\AppData\Local\Temp\ccssP54W.o
+ .bss           0x00010b58      0x264 C:\Users\ADMIN\AppData\Local\Temp\cch4DDKA.o
+ .bss           0x00010dbc        0x0 d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+ *(.sbss*)
+ *(COMMON)
+                0x00010dbc                        . = ALIGN (0x4)
+                0x00010dbc                        __bss_end = .
+                0x0001fff0                        _stack_top = ((ORIGIN (ram) + LENGTH (ram)) - 0x10)
+                0x00000001                        ASSERT ((__bss_end < (_stack_top - 0x1000)), Firmware overlaps stack)
+LOAD C:\Users\ADMIN\AppData\Local\Temp\ccnyxBLu.o
+LOAD C:\Users\ADMIN\AppData\Local\Temp\ccssP54W.o
+LOAD C:\Users\ADMIN\AppData\Local\Temp\cch4DDKA.o
+LOAD d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a
+OUTPUT(build/uart_lcd.elf elf32-littlenios2)
+LOAD linker stubs
+
+.comment        0x00000000       0x2e
+ .comment       0x00000000       0x2e C:\Users\ADMIN\AppData\Local\Temp\ccssP54W.o
+                                 0x2f (size before relaxing)
+ .comment       0x0000002e       0x2f C:\Users\ADMIN\AppData\Local\Temp\cch4DDKA.o
+ .comment       0x0000002e       0x2f d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+
+.debug_info     0x00000000      0x347
+ .debug_info    0x00000000      0x347 d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+
+.debug_abbrev   0x00000000      0x10c
+ .debug_abbrev  0x00000000      0x10c d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+
+.debug_loclists
+                0x00000000      0x37a
+ .debug_loclists
+                0x00000000      0x37a d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+
+.debug_aranges  0x00000000       0x20
+ .debug_aranges
+                0x00000000       0x20 d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+
+.debug_rnglists
+                0x00000000       0x3f
+ .debug_rnglists
+                0x00000000       0x3f d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+
+.debug_line     0x00000000      0x2e3
+ .debug_line    0x00000000      0x2e3 d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+
+.debug_str      0x00000000      0x102
+ .debug_str     0x00000000      0x102 d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+                                0x122 (size before relaxing)
+
+.debug_line_str
+                0x00000000       0xf2
+ .debug_line_str
+                0x00000000       0xf2 d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)
+                                0x187 (size before relaxing)
+
+.debug_frame    0x00000000       0x50
+ .debug_frame   0x00000000       0x50 d:/data/quartus_lite/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/12.3.1/mno-hw-mul\libgcc.a(lib2-divmod.o)

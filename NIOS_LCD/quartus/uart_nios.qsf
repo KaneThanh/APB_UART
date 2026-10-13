@@ -1,0 +1,72 @@
+set_global_assignment -name FAMILY "Cyclone IV E"
+set_global_assignment -name DEVICE EP4CE115F29C7
+set_global_assignment -name TOP_LEVEL_ENTITY de2_115_nios_top
+set_global_assignment -name VERILOG_FILE ../rtl/de2_115_nios_top.v
+set_global_assignment -name QIP_FILE nios_uart_system/synthesis/nios_uart_system.qip
+set_global_assignment -name SEARCH_PATH ../../RTL/rtl
+set_global_assignment -name SDC_FILE uart_nios.sdc
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_location_assignment PIN_Y2 -to CLOCK_50
+set_location_assignment PIN_M23 -to KEY[0]
+set_location_assignment PIN_M21 -to KEY[1]
+set_location_assignment PIN_N21 -to KEY[2]
+set_location_assignment PIN_R24 -to KEY[3]
+set_location_assignment PIN_AB28 -to SW[0]
+set_location_assignment PIN_AC28 -to SW[1]
+set_location_assignment PIN_AC27 -to SW[2]
+set_location_assignment PIN_AD27 -to SW[3]
+set_location_assignment PIN_AB27 -to SW[4]
+set_location_assignment PIN_G12 -to UART_RXD
+set_location_assignment PIN_J13 -to UART_RTS
+set_location_assignment PIN_G9 -to UART_TXD
+set_location_assignment PIN_G14 -to UART_CTS
+set_location_assignment PIN_G19 -to LED[0]
+set_location_assignment PIN_F19 -to LED[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to CLOCK_50
+set_instance_assignment -name IO_STANDARD "2.5 V" -to KEY[0]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to KEY[1]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to KEY[2]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to KEY[3]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to SW[0]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to SW[1]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to SW[2]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to SW[3]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to SW[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to UART_RXD
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to UART_RTS
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to UART_TXD
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to UART_CTS
+set_instance_assignment -name IO_STANDARD "2.5 V" -to LED[0]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to LED[1]
+set_location_assignment PIN_L6 -to {LCD_BLON}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_BLON}
+set_location_assignment PIN_L3 -to {LCD_DATA[0]}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_DATA[0]}
+set_location_assignment PIN_L1 -to {LCD_DATA[1]}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_DATA[1]}
+set_location_assignment PIN_L2 -to {LCD_DATA[2]}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_DATA[2]}
+set_location_assignment PIN_K7 -to {LCD_DATA[3]}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_DATA[3]}
+set_location_assignment PIN_K1 -to {LCD_DATA[4]}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_DATA[4]}
+set_location_assignment PIN_K2 -to {LCD_DATA[5]}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_DATA[5]}
+set_location_assignment PIN_M3 -to {LCD_DATA[6]}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_DATA[6]}
+set_location_assignment PIN_M5 -to {LCD_DATA[7]}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_DATA[7]}
+set_location_assignment PIN_L4 -to {LCD_EN}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_EN}
+set_location_assignment PIN_L5 -to {LCD_ON}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_ON}
+set_location_assignment PIN_M2 -to {LCD_RS}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_RS}
+set_location_assignment PIN_M1 -to {LCD_RW}
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {LCD_RW}
+set_location_assignment PIN_AC26 -to {SW[5]}
+set_instance_assignment -name IO_STANDARD "2.5 V" -to {SW[5]}
+set_location_assignment PIN_AD26 -to {SW[6]}
+set_instance_assignment -name IO_STANDARD "2.5 V" -to {SW[6]}
+set_location_assignment PIN_AB26 -to {SW[7]}
+set_instance_assignment -name IO_STANDARD "2.5 V" -to {SW[7]}

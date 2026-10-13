@@ -1,0 +1,43 @@
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_TOOL_NAME "Qsys"
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_TOOL_VERSION "24.1"
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_TOOL_ENV "Qsys"
+set_global_assignment -library "peripheral_check" -name SOPCINFO_FILE [file join $::quartus(qip_path) "../../peripheral_check.sopcinfo"]
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name SLD_INFO "QSYS_NAME peripheral_check HAS_SOPCINFO 1 GENERATION_ID 1791821951"
+set_global_assignment -library "peripheral_check" -name MISC_FILE [file join $::quartus(qip_path) "../peripheral_check.cmp"]
+set_global_assignment -library "peripheral_check" -name SLD_FILE [file join $::quartus(qip_path) "peripheral_check.debuginfo"]
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_TARGETED_DEVICE_FAMILY "Cyclone IV E"
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_GENERATED_DEVICE_FAMILY "{Cyclone IV E}"
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_QSYS_MODE "SYSTEM"
+set_global_assignment -name SYNTHESIS_ONLY_QIP ON
+set_global_assignment -library "peripheral_check" -name MISC_FILE [file join $::quartus(qip_path) "../../peripheral_check.qsys"]
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_COMPONENT_NAME "cGVyaXBoZXJhbF9jaGVjaw=="
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_COMPONENT_DISPLAY_NAME "cGVyaXBoZXJhbF9jaGVjaw=="
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_COMPONENT_REPORT_HIERARCHY "On"
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_COMPONENT_INTERNAL "Off"
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_COMPONENT_VERSION "MS4w"
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTc5MTgyMTk1MQ==::QXV0byBHRU5FUkFUSU9OX0lE"
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfRkFNSUxZ::Q3ljbG9uZSBJViBF::QXV0byBERVZJQ0VfRkFNSUxZ"
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0U=::RVA0Q0UxMTVGMjlDNw==::QXV0byBERVZJQ0U="
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfU1BFRURHUkFERQ==::Nw==::QXV0byBERVZJQ0VfU1BFRURHUkFERQ=="
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_COMPONENT_PARAMETER "QVVUT19DTEtfQ0xPQ0tfUkFURQ==::LTE=::QXV0byBDTE9DS19SQVRF"
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_COMPONENT_PARAMETER "QVVUT19DTEtfQ0xPQ0tfRE9NQUlO::LTE=::QXV0byBDTE9DS19ET01BSU4="
+set_global_assignment -entity "peripheral_check" -library "peripheral_check" -name IP_COMPONENT_PARAMETER "QVVUT19DTEtfUkVTRVRfRE9NQUlO::LTE=::QXV0byBSRVNFVF9ET01BSU4="
+set_global_assignment -entity "uart_cpu_peripheral" -library "peripheral_check" -name IP_COMPONENT_NAME "dWFydF9jcHVfcGVyaXBoZXJhbA=="
+set_global_assignment -entity "uart_cpu_peripheral" -library "peripheral_check" -name IP_COMPONENT_DISPLAY_NAME "QVBCIFVBUlQgYW5kIGJvYXJkIExDRA=="
+set_global_assignment -entity "uart_cpu_peripheral" -library "peripheral_check" -name IP_COMPONENT_REPORT_HIERARCHY "Off"
+set_global_assignment -entity "uart_cpu_peripheral" -library "peripheral_check" -name IP_COMPONENT_INTERNAL "Off"
+set_global_assignment -entity "uart_cpu_peripheral" -library "peripheral_check" -name IP_COMPONENT_VERSION "MS4w"
+
+set_global_assignment -library "peripheral_check" -name VERILOG_FILE [file join $::quartus(qip_path) "peripheral_check.v"]
+set_global_assignment -library "peripheral_check" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/avalon_apb_bridge.v"]
+set_global_assignment -library "peripheral_check" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/lcd_text.v"]
+set_global_assignment -library "peripheral_check" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/uart_cpu_peripheral.v"]
+set_global_assignment -library "peripheral_check" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/reset_sync.v"]
+set_global_assignment -library "peripheral_check" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/uart_sync.v"]
+set_global_assignment -library "peripheral_check" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/uart_apb_slave.v"]
+set_global_assignment -library "peripheral_check" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/uart_regs.v"]
+set_global_assignment -library "peripheral_check" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/uart_tx.v"]
+set_global_assignment -library "peripheral_check" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/uart_rx.v"]
+set_global_assignment -library "peripheral_check" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/uart_rx_slot.v"]
+set_global_assignment -library "peripheral_check" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/uart_apb_top.v"]
+set_global_assignment -library "peripheral_check" -name MISC_FILE [file join $::quartus(qip_path) "submodules/uart_functions.vh"]

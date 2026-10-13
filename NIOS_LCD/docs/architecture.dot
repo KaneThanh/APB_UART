@@ -1,0 +1,27 @@
+digraph NiosUART {
+  graph [rankdir=LR,bgcolor="white",pad=0.3,nodesep=0.55,ranksep=0.8];
+  node [shape=box,style="rounded,filled",fillcolor="#eaf2ff",fontname="Arial",fontsize=12];
+  edge [fontname="Arial",fontsize=10,color="#475569"];
+  pc [label="PC terminal\nUSB-RS232"];
+  cpu [label="Nios II/e\nC firmware\n50 MHz"];
+  ram [label="On-chip RAM 64 KiB\nCode / stack / TX queue"];
+  inter [label="Avalon-MM interconnect\n32-bit data"];
+  bridge [label="Avalon to APB\nSETUP / ACCESS / DONE"];
+  uart [label="Existing APB UART\nRegisters + TX + RX + slot",fillcolor="#dcfce7"];
+  io [label="Switch/key synchronizers\nms timer / LEDs / error count"];
+  lcd [label="32-byte LCD text buffer\nLCD refresh FSM"];
+  display [label="DE2-115 LCD 16 x 2\nRow 1: RX prefix\nRow 2: STATUS / EXT_STATUS",fillcolor="#fef3c7"];
+  sw [label="SW[7:0], KEY[3:1]"];
+  cpu -> ram [label="instruction/data"];
+  cpu -> inter [label="address / read / write\nwritedata[31:0] / byteenable[3:0]"];
+  inter -> cpu [label="readdata[31:0] / waitrequest"];
+  inter -> bridge [label="UART window\n0x20000"];
+  bridge -> uart [label="PADDR[11:0], PWDATA[31:0]\nPSEL, PENABLE, PWRITE, PSTRB[3:0]"];
+  uart -> bridge [label="PRDATA[31:0]\nPREADY / PSLVERR"];
+  pc -> uart [label="RX / CTS_n [1 each]"];
+  uart -> pc [label="TX / RTS_n [1 each]"];
+  inter -> io [label="0x21100..0x21110"];
+  sw -> io [label="8 + 3 bits"];
+  inter -> lcd [label="0x21000 + 4*i\ncharacter[7:0]"];
+  lcd -> display [label="DATA[7:0], RS, EN\nRW=0, ON=1"];
+}

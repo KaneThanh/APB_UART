@@ -1,0 +1,12 @@
+2026.10.12.23:25:24 Info: Doing: <b>qsys-script --search-path=D:/Documents/EDABK/Digital_Design/UART/NIOS_LCD/ip,$ --script=../tools/create_system.tcl</b>
+2026.10.12.23:25:26 Info: create_system nios_uart_system
+2026.10.12.23:25:26 Info: set_project_property DEVICE_FAMILY Cyclone IV E
+2026.10.12.23:25:26 Info: set_project_property DEVICE EP4CE115F29C7
+2026.10.12.23:25:26 Info: add_instance clock_source clock_source 
+2026.10.12.23:25:27 Info: set_instance_parameter_value clock_source clockFrequency 50000000
+2026.10.12.23:25:27 Info: set_instance_parameter_value clock_source clockFrequencyKnown true
+2026.10.12.23:25:27 Info: set_instance_parameter_value clock_source resetSynchronousEdges DEASSERT
+2026.10.12.23:25:27 Info: add_instance cpu altera_nios2_gen2 
+2026.10.12.23:25:27 Error: add_instance cpu altera_nios2_gen2 : No module type named altera_nios2_gen2.
+2026.10.12.23:25:27 Info: get_instances 
+2026.10.12.23:25:27 Error: Nios II Gen2 IP is missing. No CPU system will be saved. Use a Quartus installation with this IP.

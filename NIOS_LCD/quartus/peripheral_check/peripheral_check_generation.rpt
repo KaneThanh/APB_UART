@@ -1,0 +1,15 @@
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate D:\Documents\EDABK\Digital_Design\UART\NIOS_LCD\quartus\peripheral_check.qsys --synthesis=VERILOG --output-directory=D:\Documents\EDABK\Digital_Design\UART\NIOS_LCD\quartus\peripheral_check\synthesis --family="Cyclone IV E" --part=EP4CE115F29C7
+Progress: Loading quartus/peripheral_check.qsys
+Progress: Reading input file
+Progress: Adding peripheral [uart_cpu_peripheral 1.0]
+Progress: Parameterizing module peripheral
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: peripheral_check: Generating "peripheral_check" for QUARTUS_SYNTH
+Info: peripheral: "peripheral_check" instantiated uart_cpu_peripheral "peripheral"
+Info: peripheral_check: Done "peripheral_check" with 2 modules, 13 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis
