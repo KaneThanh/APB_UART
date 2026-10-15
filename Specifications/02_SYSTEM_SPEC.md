@@ -1,10 +1,10 @@
 # Specification hệ thống UART APB — DE2-115
 
-> Bổ sung 12/10/2026: tài liệu này mô tả **profile RTL Master**. Profile thay master bằng Nios II và bổ sung LCD có đặc tả, firmware và phần cứng riêng tại [NIOS_LCD/README.md](../NIOS_LCD/README.md). Hai profile dùng chung UART APB, không nối đồng thời hai master. Profile Nios chưa có SOF CPU do thiếu CPU IP trong bộ cài hiện tại.
+> Cập nhật 14/10/2026: hủy hướng CPU. Bản hiện tại dùng APB Master RTL tự áp dụng SW/baud; xem [hợp đồng điều khiển](13_RTL_MASTER_AUTO_CONTROL.md).
 
-**Phiên bản 0.2.0 · 12/10/2026 · Hardware Verilog-2001 · Host hoàn toàn RTL.**
+**Phiên bản 0.3.1 · 14/10/2026 · Hardware Verilog-2001 · Host hoàn toàn RTL.**
 
-Đây là đặc tả tổng thể hiện hành, thay cho v0.1 trong file này. Nội dung hợp nhất yêu cầu đã chốt, kiến trúc và hành vi RTL; các giới hạn/chưa triển khai được ghi rõ. Việc viết specification không chạy mô phỏng hoặc tổng hợp. Report cũ không xác nhận phiên bản mới nhất đã PASS sau khi xóa pclk/presetn.
+Đặc tả này cập nhật các tính năng của bản APB Master RTL ngày 14/10/2026: tự áp dụng CFG/baud, KEY2 để trống, KEY3 báo cáo dạng bit và hai dãy LED trạng thái. Sáu nhóm mô phỏng và Quartus full compilation đã qua ở bản RTL hiện tại; chưa kiểm chứng trên board và chưa sign-off timing I/O/reset.
 
 Yêu cầu đã thống nhất với người dùng là cơ sở; RTL và testbench phải đáp ứng hợp đồng dưới đây. Khác biệt cần được ghi nhận và xử lý, không tự coi mọi hành vi của code là yêu cầu của đề bài. Runtime baud, Board UI và Echo Master là các lựa chọn của project.
 
@@ -26,12 +26,15 @@ Word dài 5–8 bit nhưng storage rộng 8 bit. TX bỏ qua bit ngoài N; RX ze
 | REQ-08 | Full-duplex; TX tick ×1, RX lấy mẫu ×16 |
 | REQ-09 | Một RX holding slot, metadata parity/framing theo word |
 | REQ-10 | Echo Master RTL đọc bỏ byte lỗi serial, echo byte tốt |
-| REQ-11 | Board Controls tạo request; Apply ghi/readback, Resume mở lại RX |
+| REQ-11 | KEY1 và SW tự tạo yêu cầu baud/CFG sau sync/debounce; master pause, drain, ghi, verify và tự mở RX lại |
 | REQ-12 | Runtime BAUD_SEL khi RUNTIME_BAUD_EN=1 |
-| REQ-13 | Sáu HEX hiển thị toàn bộ baud active; LED pending/error |
+| REQ-13 | Sáu HEX hiển thị baud active; LEDG[8:0]=STATUS[8:0], LEDR[17:0]=EXT_STATUS[17:0] |
 | REQ-14 | Một miền clock 50 MHz; reset assert async/release sync; chỉ clk/reset_n ở UART top |
 | REQ-15 | APB transfer lỗi không tạo write/pop/START side effect |
 | REQ-16 | Full + push không pop phải giữ word cũ, bỏ word mới |
+| REQ-17 | KEY2 không có chức năng; không có nút Pause, Apply hoặc Resume |
+| REQ-18 | KEY3 gửi STATUS rồi EXT_STATUS thành hai dòng 32 ký tự 0/1, bit31 trước, CR LF sau mỗi dòng |
+| REQ-19 | SW ổn định lần đầu sau reset cũng tự áp dụng; các yêu cầu mới trong lúc bận được giữ theo giá trị cuối |
 
 REQ-01…07 là chức năng theo yêu cầu UART; các mục còn lại là hợp đồng triển khai/board đã chọn. Ngoài baseline: RAM lưu chuỗi, PC command parser, FIFO nhiều phần tử, interrupt/DMA, sticky error/W1C, auto-baud, majority voting, hai clock độc lập và streaming lossless cho mọi adapter.
 
@@ -45,9 +48,9 @@ REQ-01…07 là chức năng theo yêu cầu UART; các mục còn lại là h�
 |---|---|
 | de2_115_uart_top | Nối clock/reset, UI, master, UART, display và chân board |
 | board_controls | Synchronize/debounce KEY/SW, pending config/baud và request pulses |
-| apb_echo_master | Boot, poll/echo, Apply/Resume, fault; giữ một temp_byte và config request snapshot |
+| apb_echo_master | Boot, poll/echo, auto config/report, fault; giữ một temp_byte và config request snapshot |
 | apb_transaction_master | Chốt request bus, SETUP/ACCESS/DONE và response |
-| hex_display | Decode active baud; register HEX/LED |
+| hex_display | Decode active baud; đăng ký HEX0..HEX5. LEDG/LEDR được nối từ snapshot của master trong board top |
 | uart_apb_top | Kết nối APB slave/registers, TX/RX, sync, slot và reset |
 | uart_apb_slave | Handshake tổ hợp, rd_fire/wr_fire, PREADY/PSLVERR |
 | uart_regs | Decode/guard, TX staging, CFG/baud/pause storage, read mux/status |
@@ -109,32 +112,9 @@ Board top bật RUNTIME_BAUD_EN=1. Baud boot theo BAUDRATE parameter; host boot 
 | tx | Output | 1 | Serial TX đã đăng ký, idle/reset high |
 | rts_n | Output | 1 | Low thông báo sẵn sàng nhận, output đã đăng ký |
 
-### 4.2 Board top — de2_115_uart_top
+### 4.2 Board top và UI
 
-| Cổng | Chiều | Bit | Ý nghĩa |
-|---|---|---:|---|
-| CLOCK_50 | Input | 1 | Clock 50 MHz |
-| KEY | Input | 4 | Active-low: reset, chọn baud, Apply, Resume |
-| SW | Input | 5 | Lựa chọn frame pending |
-| UART_RXD | Input | 1 | Nối UART IP rx |
-| UART_RTS | Input | 1 | Nối UART IP cts_n; tên board khác tên phía IP |
-| UART_TXD | Output | 1 | Nối UART IP tx |
-| UART_CTS | Output | 1 | Nối UART IP rts_n |
-| HEX0…HEX5 | Output | 7 mỗi digit | Active-low, [6:0]=g,f,e,d,c,b,a |
-| LED | Output | 2 | [0]=pending; [1]=host error; 1 bật |
-
-### 4.3 UI/host/display
-
-| Tín hiệu | Bit | Producer → Consumer | Hợp đồng |
-|---|---:|---|---|
-| pending_cfg | 5 | UI → host | Frame dự kiến, chụp khi Apply |
-| pending_baud_index | 4 | UI → host | Index dự kiến 0…8 |
-| apply_req / resume_req | 1 mỗi tín hiệu | UI → host | Pulse một clock |
-| active_baud_index | 4 | host → display | Index đã xác nhận; reset=15 nghĩa là chưa hợp lệ |
-| pending | 1 | host → display | Apply đã nhận, chưa Resume xong |
-| error | 1 | host → display | HOST_FAULT, giữ tới reset |
-
-active_cfg nằm nội bộ host, không có output hiển thị. HEX chỉ hiển thị baud active.
+Board inputs: CLOCK_50[1],KEY[4],SW[5],UART_RXD[1],UART_RTS[1]. Outputs:UART_TXD[1],UART_CTS[1],HEX0..5[7mỗiport],LEDG[9],LEDR[18]. Tổng83chân. UI phát pending_cfg[5],pending_baud_index[4],cfg_req/baud_req/report_req[1]. Các bảng module đầy đủ nằm ở mục18.
 
 ## 5. Hợp đồng APB
 
@@ -360,95 +340,104 @@ Engine bus bên trong Echo Master; không tự chọn register hoặc quyết đ
 
 Một outstanding request. Read ép PSTRB=0. Response registers chỉ được consumer sử dụng khi done. Hỗ trợ wait-state dù UART slave zero-wait; không bus timeout. Reset hủy request đang chờ.
 
-## 12. Echo Master
+## 12. Echo Master: polling, echo và cấu hình tự động
 
-Host polling, không interrupt; issued ngăn phát lặp request trong cùng state. temp_byte[7:0]/temp_valid giữ tối đa một word tốt chờ echo.
+### 12.1 Polling và echo
 
-### 12.1 Boot/echo
+Khi rảnh, master đọc STATUS rồi EXT_STATUS liên tục. Nếu STATUS báo RX valid, master giữ parity_bad, đọc EXT_STATUS để giữ frame_bad, rồi đọc RX_DATA để pop byte. Byte tốt được đưa vào TX_DATA và phát bằng CTRL.START khi TX ready. Byte lỗi bị bỏ. UART tự chờ CTS trước khi phát frame.
 
-| State | APB/action | Khi thành công |
-|---|---|---|
-| WAIT_READY | Chờ req_ready | BOOT_WAIT_SAFE |
-| BOOT_WAIT_SAFE | Read EXT_STATUS | Slot full thì BOOT_DRAIN_RX; CFG_SAFE thì BOOT_CFG; chưa thì poll tiếp |
-| BOOT_DRAIN_RX (21) | Read/pop RX_DATA, bỏ dữ liệu nhận trước boot | BOOT_WAIT_SAFE |
-| BOOT_CFG | Write CFG=3 | BOOT_VERIFY |
-| BOOT_VERIFY | Read CFG | Đúng 3 thì BOOT_BAUD; sai thì fault |
-| BOOT_BAUD | Read BAUD_SEL | 0…8: publish active baud, POLL_RX; ngoài miền: fault |
-| POLL_RX | Read STATUS | RX_VALID: chụp parity_bad, READ_META; chưa có: poll |
-| READ_META | Read EXT_STATUS | Chụp frame_bad, READ_RX |
-| READ_RX | Read/pop RX_DATA | Lỗi serial: discard về poll; tốt: giữ temp_byte, WAIT_TX |
-| WAIT_TX | Read STATUS | TX_IDLE thì WRITE_TX; chưa thì poll |
-| WRITE_TX | Write TX_DATA=temp_byte | START_TX |
-| START_TX | Write CTRL.START=1 | Clear temp_valid, POLL_RX |
+Trong lúc chờ TX ready, master vẫn xen kẽ đọc STATUS và EXT_STATUS. Mỗi lần đọc thành công cập nhật snapshot tương ứng và LED. LED phản ánh trạng thái được lấy mẫu, không giữ lịch sử và không kéo dài xung; RX valid có thể sáng rất ngắn vì master pop nhanh.
 
-Host có thể poll RX khi TX đang phát; nếu đã đọc word tiếp theo thì giữ temp_byte và đợi TX idle. Không có RAM lịch sử hoặc queue nhiều word.
+`pending` và `error` là tín hiệu nội bộ để mô phỏng hoặc SignalTap. Chúng không chiếm LED xanh/đỏ; hai dãy LED hiển thị đúng bit của hai thanh ghi.
 
-### 12.2 Apply/Resume
+Bản này dùng polling. Muốn thêm interrupt phải có dây nội bộ `uart_irq` từ UART sang master, cùng quy tắc tạo/giữ/xóa nguồn ngắt. PRDATA chỉ trả dữ liệu cho giao dịch đọc APB, không tự thông báo thay đổi.
 
-| Bước/state | Hành vi |
+### 12.2 Tự cập nhật cấu hình
+
+`cfg_req` chốt CFG mong muốn từ SW. `baud_req` chốt baud mong muốn từ KEY1. Master hoàn tất byte echo đang giữ rồi chốt mục tiêu cho lần cập nhật. Trường không thay đổi giữ giá trị active.
+
+Luồng cập nhật:
+
+1. Ghi `FLOW_CTRL.RX_PAUSE = 1`, yêu cầu PC tạm dừng gửi qua RTS.
+2. Xử lý RX slot còn lại: echo byte tốt theo cấu hình cũ, bỏ byte lỗi.
+3. Chờ `CFG_SAFE = 1`: TX/RX idle, RX slot rỗng và RX line high.
+4. Ghi CFG và BAUD_SEL, đọc lại cả hai để kiểm tra.
+5. Cập nhật active_cfg và active_baud_index; HEX hiển thị baud mới.
+6. Ghi `FLOW_CTRL.RX_PAUSE = 0`, quay về polling.
+
+KEY1 tự áp dụng sau debounce và khi UART an toàn, không cần KEY2. Master không đổi baud giữa một frame đang chạy. Nếu TX đang bị CTS chặn, việc cập nhật phải đợi TX hoàn tất. Không có timeout để cưỡng bức hủy frame.
+
+Yêu cầu mới tới trong khi đang cập nhật hoặc báo cáo được giữ cho lượt kế tiếp. Nhiều thay đổi cùng loại được gộp theo giá trị cuối cùng; không lưu thành hàng đợi từng lần gạt switch.
+
+Khi đổi cấu hình: dừng PC gửi → đổi SW hoặc KEY1 → đợi cập nhật → đổi cấu hình terminal cho khớp → gửi tiếp. Không cần bấm Resume.
+
+### 12.3 Báo cáo KEY3
+
+Mỗi lần nhấn sau debounce tạo một sự kiện. Master giữ tối đa một yêu cầu báo cáo đang chờ; nhiều lần nhấn khi đã có yêu cầu chờ được gộp. Yêu cầu CFG/baud được ưu tiên trước báo cáo.
+
+Master pause RX, xử lý echo còn lại và đợi UART idle. Sau đó đọc STATUS và EXT_STATUS bằng hai giao dịch APB liên tiếp, giữ nguyên hai snapshot trong suốt báo cáo. Hai snapshot không được lấy đồng thời tuyệt đối.
+
+Báo cáo gồm 68 ký tự:
+
+- 32 ký tự `0/1` của STATUS, rồi CR và LF.
+- 32 ký tự `0/1` của EXT_STATUS, rồi CR và LF.
+
+Bit 31 ở bên trái, bit 0 ở bên phải. Không có tiền tố S/E hoặc 0x; không gửi byte thô. Ví dụ:
+
+```text
+00000000000000000000000000000001
+00000000000000000000000011010000
+```
+
+EXT_STATUS trong ví dụ có bit 4 = 1 vì snapshot được lấy khi master đang pause RX. Snapshot mô tả thời điểm đọc thanh ghi sau khi drain, không phải chính xác thời điểm nhấn KEY3.
+
+Báo cáo không bị xen byte echo. Master chờ frame báo cáo cuối kết thúc rồi tự mở RX lại. SW hoặc baud đổi trong lúc báo cáo được xử lý sau, không đổi format giữa báo cáo.
+
+**Giới hạn ASCII:** ký tự `0/1` cần ít nhất 6 data bits. Báo cáo hỗ trợ 6/7/8 data bits với parity/stop đang active. Ở 5 data bits, master từ chối báo cáo, đặt error nội bộ và tiếp tục echo. Không tự đổi format để gửi báo cáo. Terminal 8N1 là cấu hình mặc định dễ kiểm tra nhất.
+
+### 12.4 Flow control và lỗi
+
+FLOW_CTRL vẫn tồn tại để master tạm dừng RX tự động khi đổi cấu hình hoặc báo cáo. PC cần nối và bật RTS/CTS. Pause không hủy frame đã lên dây. UART chỉ có một RX holding slot; không cam kết nhận burst vô hạn hoặc nhận đúng khi adapter bỏ qua RTS.
+
+PSLVERR hoặc CFG/BAUD readback sai đưa master vào HOST_FAULT, đặt error và dừng APB tới reset. Có thể đã ghi một phần cấu hình trước lỗi; không tự rollback. LED giữ snapshot cuối. Không bổ sung timeout APB/CTS trong bản này.
+
+## 13. Board Controls, display và reset
+
+| Điều khiển | Chức năng |
 |---|---|
-| Nhận Apply | Snapshot pending_cfg/index; set apply_queued và pending |
-| Chờ ranh giới ứng dụng | Hoàn thành word đang giữ và request outstanding; ở POLL_RX không issued/temp_valid thì PAUSE_REQ |
-| PAUSE_REQ | Write FLOW_CTRL=1 |
-| DRAIN_STATUS | Read EXT_STATUS: full→DRAIN_RX; CFG_SAFE→APPLY_CFG; chưa safe→poll |
-| DRAIN_RX | Read/pop và discard word tồn; về DRAIN_STATUS |
-| APPLY_CFG | Write CFG từ snapshot |
-| APPLY_BAUD | Write BAUD_SEL từ snapshot |
-| VERIFY_CFG | Readback CFG, so toàn giá trị zero-extend; mismatch→fault |
-| VERIFY_BAUD | Readback baud, so snapshot và miền 0…8; mismatch→fault |
-| PAUSED_READY | Publish active settings; giữ pause=1 và pending=1 |
-| RESUME_REQ | Write FLOW_CTRL=0; hoàn tất thì pending=0, POLL_RX |
+| KEY0 | Reset active-low |
+| KEY1 | Tăng baud index từ 0 đến 8 rồi quay về 0; tự cập nhật BAUD_SEL |
+| KEY2 | Không có chức năng |
+| KEY3 | Gửi STATUS rồi EXT_STATUS thành hai dòng ký tự `0/1` |
+| SW[1:0] | 00 = 5, 01 = 6, 10 = 7, 11 = 8 data bits |
+| SW2 | 1 bật parity, 0 tắt parity |
+| SW3 | 0 odd, 1 even; bỏ qua khi SW2 = 0 |
+| SW4 | 0 một stop bit, 1 hai stop bits |
+| HEX5..HEX0 | Hiển thị đủ sáu chữ số baud đã được UART chấp nhận; HEX0 là hàng đơn vị |
+| LEDG[8:0] | STATUS[8:0]; bit 3..8 chưa dùng nên bằng 0 |
+| LEDR[17:0] | EXT_STATUS[17:0]; bit 8..17 chưa dùng nên bằng 0 |
 
-TX cũ đang WAIT_CTS có thể làm Apply chờ vô hạn. Drain có thể bỏ byte tồn có chủ đích. CFG/BAUD write là hai transfer riêng; không atomic, không rollback nếu bước sau lỗi.
+Baud index 0..8: 2400, 4800, 9600, 19200, 38400, 57600, 76800, 115200, 230400.
 
-Apply được nhận khi chưa pending hoặc đang PAUSED_READY. Apply đang chạy bỏ Apply tiếp theo. Reapply ở PAUSED_READY hợp lệ, vẫn giữ pause. Resume trong khi pending được chốt vào resume_queued và thực hiện sau khi Apply/readback hoàn tất; không bỏ pulse sớm. Resume khi không pending không được giữ cho lần Apply tương lai. Reapply mới xóa Resume của lần Apply trước. Board Controls vẫn ưu tiên Apply nếu các nút trùng chu kỳ. Snapshot không đổi theo SW sau khi nhận request.
+KEY và SW được đồng bộ bằng hai FF. Thời gian debounce mặc định là 500000 clock, tương đương 10 ms. Giữ nút không tự lặp. KEY1 và KEY3 nhấn cùng lúc vẫn tạo hai yêu cầu độc lập. KEY2 không tạo yêu cầu.
 
-### 12.3 HOST_FAULT
+SW được debounce theo cả vector 5 bit. Lần ổn định đầu tiên sau reset cũng tạo yêu cầu cấu hình, kể cả khi tất cả SW bằng 0. Những lần sau chỉ tạo yêu cầu khi giá trị thay đổi. Không cần nút Apply, Pause hoặc Resume.
 
-Mọi response_error, readback mismatch hoặc baud index sai đều set error=1, vào HOST_FAULT và ngừng phát request mới tới reset. Parity/framing của byte không làm host fault.
+### Trạng thái sau reset
 
-Core không tự reset/dừng do host fault. Cấu hình đã ghi trước lỗi vẫn có thể có hiệu lực; không giả định RTS high nếu lỗi xảy ra trước bước pause. pending có thể còn sáng khi lỗi trong Apply. Reset xóa fault và boot lại.
+CFG của UART core reset về 0, tương ứng 5N1. Master boot ghi và đọc lại 8N1, đọc baud khởi tạo theo parameter BAUDRATE (mặc định 115200). Sau khi SW ổn định, master tự áp dụng cấu hình từ SW.
 
-## 13. Board Controls và display
+Do đó, cấu hình ổn định sau boot phụ thuộc SW. Đặt `SW[4:0] = 00011` để dùng 8N1; `00000` sẽ dùng 5N1. Chờ hơn 10 ms sau reset trước khi bắt đầu gửi. HEX hiển thị baud không có nghĩa bước lấy mẫu SW đầu tiên đã hoàn tất.
 
-| Input | Chức năng |
-|---|---|
-| KEY0 | Reset, không qua debounce của ba nút chức năng |
-| KEY1 | Mỗi nhấn tăng pending baud một lần, 8→0 |
-| KEY2 | Apply pulse một clock sau debounce |
-| KEY3 | Resume pulse một clock sau debounce |
-| SW[1:0] | 00/01/10/11 → 5/6/7/8 data bits |
-| SW2 | Parity enable |
-| SW3 | Even=1, odd=0 |
-| SW4 | Two stops=1, one stop=0 |
+## 14. Kết nối và thao tác demo
 
-pending_cfg={SW3,SW2,SW4,SW1,SW0} sau đồng bộ và thời gian ổn định. Chọn xong SW, chờ ổn định rồi Apply; không cam kết snapshot đúng ý người dùng nếu gạt nhiều switch đồng thời lúc Apply.
+1. Nạp SOF của project RTL `UART_protocol`, đặt SW[4:0]=00011 cho 8N1.
+2. Reset KEY0, chờ hơn 10 ms; terminal dùng baud trên HEX và RTS/CTS.
+3. Gửi dữ liệu để kiểm tra echo; tắt local echo khi so sánh dữ liệu nhận.
+4. Nhấn KEY3: nhận hai dòng bit, dòng đầu STATUS, dòng sau EXT_STATUS.
+5. Dừng gửi trước khi đổi SW hoặc KEY1; đợi cập nhật rồi đổi terminal cho khớp. Không cần nhấn KEY2.
 
-KEY1…3 có hai FF đồng bộ và debounce counter riêng. Giữ nút không tự lặp. Nếu event đã debounce trùng clock: **Apply > Resume > tăng baud**, event ưu tiên thấp bị bỏ.
-
-HEX0 là hàng đơn vị, HEX5 hàng trăm nghìn; zero-fill sáu chữ số. KEY1 chưa làm HEX đổi; chỉ active baud đã readback được hiển thị. Index ngoài 0…8 blank cả sáu digit. LED[0]=pending, LED[1]=error; outputs đăng ký, phản ánh input tại cạnh kế tiếp.
-
-## 14. Kết nối PC và thao tác demo
-
-| Đường điện | Trạng thái tích hợp |
-|---|---|
-| PC → RS232/USB–RS232 → DB9 → transceiver board → FPGA | QSF hiện có bốn UART pins theo đường này |
-| PC → USB–UART logic 3,3 V → GPIO FPGA | Cần đổi pin mapping/board integration và I/O standard; chưa có build GPIO riêng |
-
-Không đưa điện áp RS-232 trực tiếp vào GPIO. USB-Blaster không tự tạo cổng COM cho UART này. Với adapter logic: TXD→FPGA rx; RXD←FPGA tx; RTS active-low→FPGA cts_n; CTS active-low←FPGA rts_n; GND chung. Board cấp nguồn riêng thì không nối VCC adapter để cấp board. Chốt điện áp của bank GPIO và adapter trước khi nối.
-
-Adapter/driver/PC application phải hỗ trợ baud và format muốn thử, đặc biệt 5/6 data bits và RTS/CTS. Bật hardware flow control; tắt local echo và XON/XOFF cho demo. Echo giữ data, không thêm CR/LF/header/checksum.
-
-1. PC idle khi boot; đặt COM theo BAUDRATE và 8N1.
-2. Reset KEY0, đợi HEX có baud hợp lệ và error LED tắt.
-3. Gửi một word, chờ echo rồi mới gửi tiếp.
-4. Đổi cấu hình: dừng gửi, chờ echo cuối, chọn SW/KEY1 rồi KEY2.
-5. Đợi Apply hoàn tất, đổi COM settings đúng snapshot, rồi KEY3 Resume. pending tắt sau write unpause.
-6. Nếu host error: kiểm tra nguyên nhân, reset để boot lại.
-
-**Giới hạn UI:** pending sáng ngay khi nhận Apply và tiếp tục sáng ở PAUSED_READY, chưa phân biệt Applying/Ready. Khi baud đổi, HEX cập nhật là dấu hiệu readback hoàn tất. Khi chỉ đổi format, HEX không đổi; hiện chưa có đèn apply_done riêng. Resume bấm sớm trong khi pending được ghi nhớ, nhưng vẫn phải chờ Apply hoàn tất trước khi mở RX. Nên đổi cấu hình PC trước khi bấm Resume.
-
-Slot full trước boot được Master đọc/pop rồi bỏ để tiếp tục boot. RX giữ low hoặc PC gửi liên tục không cho khoảng idle vẫn có thể trì hoãn boot. CTS high giữ TX busy hoặc RX line low kéo dài cũng có thể khiến Apply chờ; không hardware timeout. Resume không hủy frame TX đang chờ CTS và không bỏ qua CFG_SAFE.
+UART_RTS là input CTS_n của FPGA; UART_CTS là output RTS_n. Hai tên cổng theo board không được dùng để suy ngược chiều handshake. LEDG/LEDR cập nhật từ APB reads; các bit thay đổi nhanh có thể không nhìn rõ bằng mắt.
 
 ## 15. Ưu tiên và xử lý lỗi
 
@@ -465,11 +454,11 @@ Slot full trước boot được Master đọc/pop rồi bỏ để tiếp tục
 | CTS đổi giữa frame | Hoàn tất frame đang phát |
 | APB access lỗi | PSLVERR, không side effect, host không tự retry |
 | Parity/frame error | Metadata theo slot; Echo Master đọc bỏ |
-| Reset giữa Apply | Hủy snapshot/pending; boot 8N1 và baud parameter |
+| Reset giữa auto config | Hủy snapshot/pending; boot 8N1/baud parameter rồi tự áp dụng SW |
 
 ## 16. Kiểm chứng và nghiệm thu
 
-[Testplan](../RTL/tb/TESTPLAN.md) chứa stimulus, expected results, waveform và lệnh chạy. ID dưới đây chỉ ra bài đã có trong source; không xác nhận bản hiện tại đã chạy PASS.
+[Testplan](../RTL/tb/TESTPLAN.md) chứa stimulus, expected results, waveform và lệnh chạy. Bảng dưới ánh xạ yêu cầu tới testbench. Kết quả bản RTL ngày 14/10/2026 được lưu trong `../RTL/sim/logs/` và `../RTL/VERIFICATION_RESULTS.md`.
 
 | Requirement | Testplan cases |
 |---|---|
@@ -477,14 +466,14 @@ Slot full trước boot được Master đọc/pop rồi bỏ để tiếp tục
 | REQ-06, REQ-15 | C01…C04, C09/C17; U06…U09; R03/R04 |
 | REQ-07, REQ-09, REQ-16 | C05/C08/C10…C15; U01…U05; R01/R02 |
 | REQ-10 | B01/B03/B04/B09/B11/B12 |
-| REQ-11…13 | U10…U14; B02/B05…B10 |
+| REQ-11…13, REQ-17…19 | tb_units: debounce và nút độc lập; tb_board: 257 checks auto baud/CFG, KEY2, báo cáo 68 ký tự, LED/CTS; tb_board_recovery: config chờ CTS và RX đầy lúc boot |
 | REQ-14 | C01/C18/R05/B01; hardware compile riêng Verilog-2001 |
 
-Gate mô phỏng: năm testbench compile/chạy thành công, có marker tổng PASS, không watchdog/$fatal; matrix đủ 216 case và parameter đủ chín instance. Hardware dùng -g2001, testbench dùng SystemVerilog. ±2% hiện chỉ là bit-period tests tại 230400, 5…8 bits, even parity, hai stop; không suy thành tolerance toàn miền.
+Gate mô phỏng: sáu testbench compile/chạy thành công, có marker tổng PASS, không watchdog/$fatal; matrix đủ 216 case và parameter đủ chín instance. Hardware dùng -g2001, testbench dùng SystemVerilog. ±2% hiện chỉ là bit-period tests tại 230400, 5…8 bits, even parity, hai stop; không suy thành tolerance toàn miền.
 
 Gate implementation: exact FPGA part, đủ pin/IO standard; synthesis, fit và timing review 20 ns; review synchronizer/reset/async paths. Synthesis pass không thay timing closure hoặc demo vật lý.
 
-Gate board đề xuất: 1000 word send-one/wait-echo 115200/8N1 đúng data/thứ tự, không fault; thêm baud thấp/cao, format adapter hỗ trợ, CTS stall và Apply/Resume. Ghi cấu hình nào chỉ được kiểm tra mô phỏng vì adapter hạn chế. Mỗi kết quả lưu source revision/bản source, tool version, ngày chạy và log.
+Gate board đề xuất: 1000 word send-one/wait-echo 115200/8N1 đúng data/thứ tự, không fault; thêm baud thấp/cao, format adapter hỗ trợ, CTS stall và auto config/report. Ghi cấu hình nào chỉ được kiểm tra mô phỏng vì adapter hạn chế. Mỗi kết quả lưu source revision/bản source, tool version, ngày chạy và log.
 
 Chưa bao phủ đầy đủ mọi payload/phase/jitter/reset state/back-to-back APB/strobe/fault injection/HEX configuration. G01…G09 trong TESTPLAN.md là các bài cần bổ sung. Metastability và nhiễu điện không được chứng minh bằng mô phỏng logic.
 
@@ -494,13 +483,14 @@ Chưa bao phủ đầy đủ mọi payload/phase/jitter/reset state/back-to-back
 |---|---|
 | RX buffer | Một slot; cần FIFO/headroom nếu yêu cầu burst lossless |
 | Error history | Không sticky W1C/overrun counter; không đo số byte mất từ status |
-| Timeout | Không CTS/APB/Apply timeout; watchdog testbench không phải hardware feature |
-| Reconfiguration | Hai write không atomic, có drain/discard; peer phải phối hợp |
-| UI | Chưa có apply_done riêng hoặc hiển thị pending config |
+| Timeout | Không CTS/APB/config timeout; watchdog testbench không phải hardware feature |
+| Reconfiguration | Hai write không atomic; drain bằng echo byte tốt, bỏ byte lỗi; peer phải phối hợp |
+| UI | LED hiển thị status; pending/error chỉ là net nội bộ. HEX đổi sau readback baud; đổi riêng CFG không làm HEX đổi |
+| Report 5 bits | Không biểu diễn được ASCII 0/1; master từ chối báo cáo, tiếp tục echo |
 | Parameter | OVERSAMPLE chỉ 16; invalid parameter không bị assert chặn |
-| Board constraints | QSF đã đặt EP4CE115F29C7, đủ 58 location/I/O-standard assignments theo manual; JP6=3.3 V, JP7=2.5 V mặc định. SDC vẫn cần review async/external I/O và timing sign-off; xem [pin assignments](../RTL/board/PIN_ASSIGNMENTS.md) |
+| Board constraints | QSF đã đặt EP4CE115F29C7, đủ 83 location/I/O-standard assignments theo manual; JP6=3.3 V, JP7=2.5 V mặc định. SDC vẫn cần review async/external I/O và timing sign-off; xem [pin assignments](../RTL/board/PIN_ASSIGNMENTS.md) |
 | GPIO adapter | Cần pin mapping/build phù hợp; không dùng nguyên QSF DB9 để nối GPIO |
-| Kết quả mới | Chưa chạy mô phỏng/tổng hợp trong lần lập specification này |
+| Kết quả mới | RTL hiện tại đã qua 6 nhóm mô phỏng, Quartus full compile và tạo SOF; lần này cập nhật tài liệu/diagram, không thay RTL |
 | Tài liệu lịch sử | Workbook v0.1 và revision_before_* không đại diện interface mới nhất |
 
 Deliverables: [UART top](../RTL/rtl/uart_apb_top.v), [Board top](../RTL/board/de2_115_uart_top.v), [source list](../RTL/sim/rtl.f), [run script](../RTL/sim/run.ps1), [Board QSF](../RTL/board/uart.qsf), [testplan](../RTL/tb/TESTPLAN.md).
@@ -513,64 +503,63 @@ Các bảng sau lấy tên cổng, chiều và bit width từ source hiện hàn
 
 ### 18.1. `de2_115_uart_top`
 
-Source: [de2_115_uart_top.v](../RTL/board/de2_115_uart_top.v).
-
-| Cổng | Chiều | Số bit |
+| Port | Chiều | Bits |
 |---|---|---:|
-| `CLOCK_50` | Input | 1 |
-| `KEY` | Input | 4 |
-| `SW` | Input | 5 |
-| `UART_RXD` | Input | 1 |
-| `UART_RTS` | Input | 1 |
-| `UART_TXD` | Output | 1 |
-| `UART_CTS` | Output | 1 |
-| `HEX0` | Output | 7 |
-| `HEX1` | Output | 7 |
-| `HEX2` | Output | 7 |
-| `HEX3` | Output | 7 |
-| `HEX4` | Output | 7 |
-| `HEX5` | Output | 7 |
-| `LED` | Output | 2 |
+| `CLOCK_50` | input | 1 |
+| `KEY` | input | 4 |
+| `SW` | input | 5 |
+| `UART_RXD` | input | 1 |
+| `UART_RTS` | input | 1 |
+| `UART_TXD` | output | 1 |
+| `UART_CTS` | output | 1 |
+| `HEX0` | output | 7 |
+| `HEX1` | output | 7 |
+| `HEX2` | output | 7 |
+| `HEX3` | output | 7 |
+| `HEX4` | output | 7 |
+| `HEX5` | output | 7 |
+| `LEDG` | output | 9 |
+| `LEDR` | output | 18 |
 
 ### 18.2. `board_controls`
 
-Source: [board_controls.v](../RTL/board/board_controls.v).
-
-| Cổng | Chiều | Số bit |
+| Port | Chiều | Bits |
 |---|---|---:|
-| `clk` | Input | 1 |
-| `reset_n` | Input | 1 |
-| `KEY` | Input | 4 |
-| `SW` | Input | 5 |
-| `pending_baud_index` | Output | 4 |
-| `pending_cfg` | Output | 5 |
-| `apply_req` | Output | 1 |
-| `resume_req` | Output | 1 |
+| `clk` | input | 1 |
+| `reset_n` | input | 1 |
+| `KEY` | input | 4 |
+| `SW` | input | 5 |
+| `pending_baud_index` | output | 4 |
+| `pending_cfg` | output | 5 |
+| `cfg_req` | output | 1 |
+| `baud_req` | output | 1 |
+| `report_req` | output | 1 |
 
 ### 18.3. `apb_echo_master`
 
-Source: [apb_echo_master.v](../RTL/rtl/apb_echo_master.v).
-
-| Cổng | Chiều | Số bit |
+| Port | Chiều | Bits |
 |---|---|---:|
-| `clk` | Input | 1 |
-| `reset_n` | Input | 1 |
-| `pending_cfg` | Input | 5 |
-| `pending_baud_index` | Input | 4 |
-| `apply_req` | Input | 1 |
-| `resume_req` | Input | 1 |
-| `prdata` | Input | 32 |
-| `pready` | Input | 1 |
-| `pslverr` | Input | 1 |
-| `psel` | Output | 1 |
-| `penable` | Output | 1 |
-| `pwrite` | Output | 1 |
-| `paddr` | Output | 12 |
-| `pwdata` | Output | 32 |
-| `pstrb` | Output | 4 |
-| `active_baud_index` | Output | 4 |
-| `error` | Output | 1 |
-| `pending` | Output | 1 |
+| `clk` | input | 1 |
+| `reset_n` | input | 1 |
+| `pending_cfg` | input | 5 |
+| `pending_baud_index` | input | 4 |
+| `cfg_req` | input | 1 |
+| `baud_req` | input | 1 |
+| `report_req` | input | 1 |
+| `prdata` | input | 32 |
+| `pready` | input | 1 |
+| `pslverr` | input | 1 |
+| `psel` | output | 1 |
+| `penable` | output | 1 |
+| `pwrite` | output | 1 |
+| `paddr` | output | 12 |
+| `pwdata` | output | 32 |
+| `pstrb` | output | 4 |
+| `active_baud_index` | output | 4 |
+| `status_snapshot` | output | 32 |
+| `ext_status_snapshot` | output | 32 |
+| `error` | output | 1 |
+| `pending` | output | 1 |
 
 ### 18.4. `apb_transaction_master`
 
@@ -601,22 +590,17 @@ Source: [apb_transaction_master.v](../RTL/rtl/apb_transaction_master.v).
 
 ### 18.5. `hex_display`
 
-Source: [hex_display.v](../RTL/board/hex_display.v).
-
-| Cổng | Chiều | Số bit |
+| Port | Chiều | Bits |
 |---|---|---:|
-| `clk` | Input | 1 |
-| `reset_n` | Input | 1 |
-| `active_baud_index` | Input | 4 |
-| `error` | Input | 1 |
-| `pending` | Input | 1 |
-| `HEX0` | Output | 7 |
-| `HEX1` | Output | 7 |
-| `HEX2` | Output | 7 |
-| `HEX3` | Output | 7 |
-| `HEX4` | Output | 7 |
-| `HEX5` | Output | 7 |
-| `LED` | Output | 2 |
+| `clk` | input | 1 |
+| `reset_n` | input | 1 |
+| `active_baud_index` | input | 4 |
+| `HEX0` | output | 7 |
+| `HEX1` | output | 7 |
+| `HEX2` | output | 7 |
+| `HEX3` | output | 7 |
+| `HEX4` | output | 7 |
+| `HEX5` | output | 7 |
 
 ### 18.6. `uart_apb_top`
 
@@ -883,3 +867,7 @@ Source: [reset_sync.v](../RTL/rtl/reset_sync.v).
 | `rst_n_int` | Output | 1 |
 | `sync_ready` | Output | 1 |
 
+
+## 19. Flowchart APB Master trong file kiến trúc
+
+[UART_APB_ARCHITECTURE.drawio](../UART_APB_ARCHITECTURE_PACKAGE/UART_APB_ARCHITECTURE.drawio) chứa thêm trang14–17: Board Controls, Boot/Poll/Echo, Auto Config, Binary Report. Các trang là khối và dây native, chỉnh sửa được. [Xem gallery](../UART_APB_ARCHITECTURE_PACKAGE/index.html#14).
