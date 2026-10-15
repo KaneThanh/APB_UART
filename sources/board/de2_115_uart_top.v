@@ -1,4 +1,3 @@
-`default_nettype none
 module de2_115_uart_top #(
   parameter integer CLK_FREQ=50000000,
   parameter integer BAUDRATE=115200,
@@ -17,7 +16,8 @@ module de2_115_uart_top #(
   output wire [6:0] HEX3,
   output wire [6:0] HEX4,
   output wire [6:0] HEX5,
-  output wire [1:0] LED
+  output wire [8:0] LEDG,
+  output wire [17:0] LEDR
 );
   wire clk;
   wire reset_n;
@@ -25,8 +25,9 @@ module de2_115_uart_top #(
   wire [4:0] pending_cfg;
   wire [3:0] pending_baud_index;
   wire [3:0] active_baud_index;
-  wire apply_req;
-  wire resume_req;
+  wire cfg_req;
+  wire baud_req, report_req;
+  wire [31:0] status_snapshot, ext_status_snapshot;
   wire error;
   wire pending;
   wire psel;
@@ -39,6 +40,8 @@ module de2_115_uart_top #(
   wire [31:0] prdata;
   wire [3:0] pstrb;
   assign clk=CLOCK_50;
+  assign LEDG=status_snapshot[8:0];
+  assign LEDR=ext_status_snapshot[17:0];
   reset_sync u_board_reset (
     .clk(clk),
     .async_reset_n(KEY[0]),
@@ -52,16 +55,18 @@ module de2_115_uart_top #(
     .SW(SW),
     .pending_baud_index(pending_baud_index),
     .pending_cfg(pending_cfg),
-    .apply_req(apply_req),
-    .resume_req(resume_req)
+    .cfg_req(cfg_req),
+    .baud_req(baud_req),
+    .report_req(report_req)
   );
   apb_echo_master u_master (
     .clk(clk),
     .reset_n(reset_n),
     .pending_cfg(pending_cfg),
     .pending_baud_index(pending_baud_index),
-    .apply_req(apply_req),
-    .resume_req(resume_req),
+    .cfg_req(cfg_req),
+    .baud_req(baud_req),
+    .report_req(report_req),
     .prdata(prdata),
     .pready(pready),
     .pslverr(pslverr),
@@ -72,6 +77,8 @@ module de2_115_uart_top #(
     .pwdata(pwdata),
     .pstrb(pstrb),
     .active_baud_index(active_baud_index),
+    .status_snapshot(status_snapshot),
+    .ext_status_snapshot(ext_status_snapshot),
     .error(error),
     .pending(pending)
   );
@@ -96,16 +103,13 @@ module de2_115_uart_top #(
     .clk(clk),
     .reset_n(reset_n),
     .active_baud_index(active_baud_index),
-    .error(error),
-    .pending(pending),
     .HEX0(HEX0),
     .HEX1(HEX1),
     .HEX2(HEX2),
     .HEX3(HEX3),
     .HEX4(HEX4),
-    .HEX5(HEX5),
-    .LED(LED)
+    .HEX5(HEX5)
   );
 endmodule
 
-`default_nettype wire
+

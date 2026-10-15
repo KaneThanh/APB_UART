@@ -1,22 +1,24 @@
-# Pin assignments DE2-115 cho UART
+# Pin assignments UART APB — DE2-115
 
-Cập nhật 12/10/2026. Device: `EP4CE115F29C7`; top: `de2_115_uart_top`.
+Cập nhật 14/10/2026. Device `EP4CE115F29C7`, top `de2_115_uart_top`.
 
-Pinout lấy từ Terasic DE2-115 User Manual, bảng 4-1 (SW), 4-2 (KEY), 4-3 (LED), 4-4 (HEX), 4-5 (clock), 4-18 (UART).
+Hai QSF [tại đây](uart.qsf) và [bản tương ứng](../../Quartus/UART_protocol.qsf) có cùng **83 location assignments và 83 I/O-standard assignments**. Đã đối chiếu với toàn bộ bit của cổng RTL: không thiếu, không thừa, không trùng chân vật lý.
 
-Nguồn: [Terasic manual](https://www.terasic.com.tw/attachment/archive/502/DE2_115_User_manual.pdf).
+## Chức năng mới
 
-Hai QSF dùng cùng 58 location assignments và 58 I/O-standard assignments: [uart.qsf](uart.qsf) và [UART_protocol.qsf](../../Quartus/UART_protocol.qsf). LED[0] nối LEDR0 (pending), LED[1] nối LEDR1 (host fault).
+- KEY0 reset, KEY1 tăng baud và tự áp dụng, KEY2 để trống, KEY3 gửi STATUS rồi EXT_STATUS dạng hai dòng 32 ký tự `0/1`.
+- SW[4:0] tự cấu hình sau sync/debounce; không có nút Apply/Pause/Resume.
+- HEX5..HEX0 hiển thị baud active; HEX0 là hàng đơn vị.
+- LEDG[8:0] = STATUS[8:0]; LEDR[17:0] = EXT_STATUS[17:0]. Bit bằng 1 thì LED sáng. Không còn cổng LED[1:0] pending/error.
+- UART_RXD → RX; UART_RTS → CTS_n (input FPGA); UART_TXD ← TX; UART_CTS ← RTS_n (output FPGA).
 
-## Điện áp board
+## Điện áp và nguồn pinout
 
-- JP6: short pins 7–8, 3.3 V mặc định (bảng 4-11).
-- JP7: short pins 5–6, 2.5 V mặc định (bảng 4-8).
-- QSF đang dùng hai mức trên. Nếu board đã đổi jumper, cần đổi I/O standard cho đúng VCCIO thực; không tự đổi tất cả chân thành 3.3 V.
+Pinout theo [Terasic DE2-115 User Manual](https://www.terasic.com.tw/attachment/archive/502/DE2_115_User_manual.pdf), bảng clock, KEY/SW, LED, HEX và RS232. Giữ cấu hình jumper mặc định JP6 = 3.3 V (7–8), JP7 = 2.5 V (5–6). Nếu jumper thực tế khác, phải đối chiếu lại VCCIO. Toàn bộ LEDG/LEDR dùng 2.5 V.
 
-## Bảng chân
+## Bảng chân đầy đủ
 
-| Cổng RTL | Chân FPGA | I/O standard |
+| Port bit | FPGA pin | I/O standard |
 |---|---|---|
 | `CLOCK_50` | `PIN_Y2` | 3.3-V LVTTL |
 | `KEY[0]` | `PIN_M23` | 2.5 V |
@@ -74,13 +76,34 @@ Hai QSF dùng cùng 58 location assignments và 58 I/O-standard assignments: [ua
 | `HEX5[4]` | `PIN_AG19` | 3.3-V LVTTL |
 | `HEX5[5]` | `PIN_AF18` | 3.3-V LVTTL |
 | `HEX5[6]` | `PIN_AH18` | 3.3-V LVTTL |
-| `LED[0]` | `PIN_G19` | 2.5 V |
-| `LED[1]` | `PIN_F19` | 2.5 V |
+| `LEDG[0]` | `PIN_E21` | 2.5 V |
+| `LEDG[1]` | `PIN_E22` | 2.5 V |
+| `LEDG[2]` | `PIN_E25` | 2.5 V |
+| `LEDG[3]` | `PIN_E24` | 2.5 V |
+| `LEDG[4]` | `PIN_H21` | 2.5 V |
+| `LEDG[5]` | `PIN_G20` | 2.5 V |
+| `LEDG[6]` | `PIN_G22` | 2.5 V |
+| `LEDG[7]` | `PIN_G21` | 2.5 V |
+| `LEDG[8]` | `PIN_F17` | 2.5 V |
+| `LEDR[0]` | `PIN_G19` | 2.5 V |
+| `LEDR[1]` | `PIN_F19` | 2.5 V |
+| `LEDR[2]` | `PIN_E19` | 2.5 V |
+| `LEDR[3]` | `PIN_F21` | 2.5 V |
+| `LEDR[4]` | `PIN_F18` | 2.5 V |
+| `LEDR[5]` | `PIN_E18` | 2.5 V |
+| `LEDR[6]` | `PIN_J19` | 2.5 V |
+| `LEDR[7]` | `PIN_H19` | 2.5 V |
+| `LEDR[8]` | `PIN_J17` | 2.5 V |
+| `LEDR[9]` | `PIN_G17` | 2.5 V |
+| `LEDR[10]` | `PIN_J15` | 2.5 V |
+| `LEDR[11]` | `PIN_H16` | 2.5 V |
+| `LEDR[12]` | `PIN_J16` | 2.5 V |
+| `LEDR[13]` | `PIN_H17` | 2.5 V |
+| `LEDR[14]` | `PIN_F15` | 2.5 V |
+| `LEDR[15]` | `PIN_G15` | 2.5 V |
+| `LEDR[16]` | `PIN_G16` | 2.5 V |
+| `LEDR[17]` | `PIN_H15` | 2.5 V |
 
-## Phạm vi kiểm tra
+## Giới hạn kiểm chứng
 
-Location/I/O standard đã bao phủ toàn bộ cổng board top. `uart.sdc` có clock 50 MHz, nhưng vẫn cần review ngoại lệ async và external I/O timing trước timing sign-off. Chưa có kiểm chứng trên board vật lý.
-
-`sim/synthesize.tcl` và project `build/synthesis` chỉ phục vụ Analysis & Synthesis; pin constraints để fit board nằm trong hai QSF được liên kết ở trên.
-
-Kết quả mới: Analysis & Synthesis và Fitter thành công, không còn cảnh báo 169085. Xem [report kiểm tra](../reports/DE2_115_PIN_ASSIGNMENT_CHECK.md) để biết các warning còn lại và giới hạn kiểm chứng.
+Đã kiểm tra mapping QSF với RTL và hai bản QSF khớp nhau. Cảnh báo KEY2 không điều khiển logic là đúng yêu cầu. Drive strength/slew và constraint I/O/reset vẫn cần review; không coi kiểm tra pin là timing sign-off hay kiểm chứng board vật lý.
