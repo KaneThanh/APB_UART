@@ -28,7 +28,7 @@ Word dài 5–8 bit nhưng storage rộng 8 bit. TX bỏ qua bit ngoài N; RX ze
 | REQ-10 | Echo Master RTL đọc bỏ byte lỗi serial, echo byte tốt |
 | REQ-11 | KEY1 và SW tự tạo yêu cầu baud/CFG sau sync/debounce; master pause, drain, ghi, verify và tự mở RX lại |
 | REQ-12 | Runtime BAUD_SEL khi RUNTIME_BAUD_EN=1 |
-| REQ-13 | Sáu HEX hiển thị baud active; LEDG[8:0]=STATUS[8:0], LEDR[17:0]=EXT_STATUS[17:0] |
+| REQ-13 | SW5 chọn baud active hoặc byte RX nhị phân; LEDG[8:0]=STATUS[8:0], LEDR[17:0]=EXT_STATUS[17:0] |
 | REQ-14 | Một miền clock 50 MHz; reset assert async/release sync; chỉ clk/reset_n ở UART top |
 | REQ-15 | APB transfer lỗi không tạo write/pop/START side effect |
 | REQ-16 | Full + push không pop phải giữ word cũ, bỏ word mới |
@@ -50,7 +50,7 @@ REQ-01…07 là chức năng theo yêu cầu UART; các mục còn lại là h�
 | board_controls | Synchronize/debounce KEY/SW, pending config/baud và request pulses |
 | apb_echo_master | Boot, poll/echo, auto config/report, fault; giữ một temp_byte và config request snapshot |
 | apb_transaction_master | Chốt request bus, SETUP/ACCESS/DONE và response |
-| hex_display | Decode active baud; đăng ký HEX0..HEX5. LEDG/LEDR được nối từ snapshot của master trong board top |
+| hex_display | Chọn baud hoặc last_rx_byte theo display_rx_mode; đăng ký HEX0..HEX7. LEDG/LEDR được nối từ snapshot của master trong board top |
 | uart_apb_top | Kết nối APB slave/registers, TX/RX, sync, slot và reset |
 | uart_apb_slave | Handshake tổ hợp, rd_fire/wr_fire, PREADY/PSLVERR |
 | uart_regs | Decode/guard, TX staging, CFG/baud/pause storage, read mux/status |
@@ -114,7 +114,7 @@ Board top bật RUNTIME_BAUD_EN=1. Baud boot theo BAUDRATE parameter; host boot 
 
 ### 4.2 Board top và UI
 
-Board inputs: CLOCK_50[1],KEY[4],SW[5],UART_RXD[1],UART_RTS[1]. Outputs:UART_TXD[1],UART_CTS[1],HEX0..5[7mỗiport],LEDG[9],LEDR[18]. Tổng83chân. UI phát pending_cfg[5],pending_baud_index[4],cfg_req/baud_req/report_req[1]. Các bảng module đầy đủ nằm ở mục18.
+Board inputs: CLOCK_50[1],KEY[4],SW[6],UART_RXD[1],UART_RTS[1]. Outputs:UART_TXD[1],UART_CTS[1],HEX0..7[7mỗiport],LEDG[9],LEDR[18]. Tổng98chân. UI phát pending_cfg[5],pending_baud_index[4],cfg_req/baud_req/report_req[1]. Các bảng module đầy đủ nằm ở mục18.
 
 ## 5. Hợp đồng APB
 
@@ -413,7 +413,8 @@ PSLVERR hoặc CFG/BAUD readback sai đưa master vào HOST_FAULT, đặt error 
 | SW2 | 1 bật parity, 0 tắt parity |
 | SW3 | 0 odd, 1 even; bỏ qua khi SW2 = 0 |
 | SW4 | 0 một stop bit, 1 hai stop bits |
-| HEX5..HEX0 | Hiển thị đủ sáu chữ số baud đã được UART chấp nhận; HEX0 là hàng đơn vị |
+| SW5 | 0: baud; 1: byte RX nhị phân |
+| HEX7..HEX0 | SW5=0: HEX5..0 baud, HEX7/6 tắt; SW5=1: bit7..bit0 |
 | LEDG[8:0] | STATUS[8:0]; bit 3..8 chưa dùng nên bằng 0 |
 | LEDR[17:0] | EXT_STATUS[17:0]; bit 8..17 chưa dùng nên bằng 0 |
 
@@ -488,7 +489,7 @@ Chưa bao phủ đầy đủ mọi payload/phase/jitter/reset state/back-to-back
 | UI | LED hiển thị status; pending/error chỉ là net nội bộ. HEX đổi sau readback baud; đổi riêng CFG không làm HEX đổi |
 | Report 5 bits | Không biểu diễn được ASCII 0/1; master từ chối báo cáo, tiếp tục echo |
 | Parameter | OVERSAMPLE chỉ 16; invalid parameter không bị assert chặn |
-| Board constraints | QSF đã đặt EP4CE115F29C7, đủ 83 location/I/O-standard assignments theo manual; JP6=3.3 V, JP7=2.5 V mặc định. SDC vẫn cần review async/external I/O và timing sign-off; xem [pin assignments](../RTL/board/PIN_ASSIGNMENTS.md) |
+| Board constraints | QSF đã đặt EP4CE115F29C7, đủ 98 location/I/O-standard assignments theo manual; JP6=3.3 V, JP7=2.5 V mặc định. SDC vẫn cần review async/external I/O và timing sign-off; xem [pin assignments](../RTL/board/PIN_ASSIGNMENTS.md) |
 | GPIO adapter | Cần pin mapping/build phù hợp; không dùng nguyên QSF DB9 để nối GPIO |
 | Kết quả mới | RTL hiện tại đã qua 6 nhóm mô phỏng, Quartus full compile và tạo SOF; lần này cập nhật tài liệu/diagram, không thay RTL |
 | Tài liệu lịch sử | Workbook v0.1 và revision_before_* không đại diện interface mới nhất |
@@ -507,7 +508,7 @@ Các bảng sau lấy tên cổng, chiều và bit width từ source hiện hàn
 |---|---|---:|
 | `CLOCK_50` | input | 1 |
 | `KEY` | input | 4 |
-| `SW` | input | 5 |
+| `SW` | input | 6 |
 | `UART_RXD` | input | 1 |
 | `UART_RTS` | input | 1 |
 | `UART_TXD` | output | 1 |
@@ -518,6 +519,8 @@ Các bảng sau lấy tên cổng, chiều và bit width từ source hiện hàn
 | `HEX3` | output | 7 |
 | `HEX4` | output | 7 |
 | `HEX5` | output | 7 |
+| `HEX6` | output | 7 |
+| `HEX7` | output | 7 |
 | `LEDG` | output | 9 |
 | `LEDR` | output | 18 |
 
@@ -528,12 +531,13 @@ Các bảng sau lấy tên cổng, chiều và bit width từ source hiện hàn
 | `clk` | input | 1 |
 | `reset_n` | input | 1 |
 | `KEY` | input | 4 |
-| `SW` | input | 5 |
+| `SW` | input | 6 |
 | `pending_baud_index` | output | 4 |
 | `pending_cfg` | output | 5 |
 | `cfg_req` | output | 1 |
 | `baud_req` | output | 1 |
 | `report_req` | output | 1 |
+| `display_rx_mode` | output | 1 |
 
 ### 18.3. `apb_echo_master`
 
@@ -556,6 +560,7 @@ Các bảng sau lấy tên cổng, chiều và bit width từ source hiện hàn
 | `pwdata` | output | 32 |
 | `pstrb` | output | 4 |
 | `active_baud_index` | output | 4 |
+| `last_rx_byte` | output | 8 |
 | `status_snapshot` | output | 32 |
 | `ext_status_snapshot` | output | 32 |
 | `error` | output | 1 |
@@ -595,12 +600,16 @@ Source: [apb_transaction_master.v](../RTL/rtl/apb_transaction_master.v).
 | `clk` | input | 1 |
 | `reset_n` | input | 1 |
 | `active_baud_index` | input | 4 |
+| `display_rx_mode` | input | 1 |
+| `last_rx_byte` | input | 8 |
 | `HEX0` | output | 7 |
 | `HEX1` | output | 7 |
 | `HEX2` | output | 7 |
 | `HEX3` | output | 7 |
 | `HEX4` | output | 7 |
 | `HEX5` | output | 7 |
+| `HEX6` | output | 7 |
+| `HEX7` | output | 7 |
 
 ### 18.6. `uart_apb_top`
 
@@ -871,3 +880,16 @@ Source: [reset_sync.v](../RTL/rtl/reset_sync.v).
 ## 19. Flowchart APB Master trong file kiến trúc
 
 [UART_APB_ARCHITECTURE.drawio](../UART_APB_ARCHITECTURE_PACKAGE/UART_APB_ARCHITECTURE.drawio) chứa thêm trang14–17: Board Controls, Boot/Poll/Echo, Auto Config, Binary Report. Các trang là khối và dây native, chỉnh sửa được. [Xem gallery](../UART_APB_ARCHITECTURE_PACKAGE/index.html#14).
+
+## Hai chế độ HEX — 15/10/2026
+
+| SW5 | Hiển thị |
+|---|---|
+| 0 | Baud active trên HEX5..HEX0; HEX7 và HEX6 tắt |
+| 1 | 8 ký tự nhị phân HEX7..HEX0, tương ứng bit7..bit0 của last_rx_byte |
+
+Nhận ASCII A (0x41) sẽ hiện `01000001`. SW5 đồng bộ 2 FF và debounce 10 ms độc lập với SW[4:0]; đổi mode không phát cfg_req và không pause UART. KEY và các switch cấu hình giữ nguyên.
+
+Master cập nhật last_rx_byte[7:0] sau mỗi lần đọc RX_DATA thành công, gồm boot drain. Giá trị giữ tới lần đọc RX tiếp theo hoặc reset về 0; KEY3 gửi report không làm đổi byte này. Với 5/6/7 data bits, các bit cao bằng 0. Byte lỗi parity/frame vẫn hiển thị dữ liệu đã thu nhưng không echo. Frame bị drop khi RX slot đầy không cập nhật hiển thị. Nếu master bận TX, hiển thị chỉ đổi khi master đọc được RX_DATA.
+
+Interface mới: board_controls.display_rx_mode output[1]; apb_echo_master.last_rx_byte output[8]; hex_display.display_rx_mode input[1], last_rx_byte input[8], HEX6/HEX7 output[7]. Board top SW mở rộng [5:0], thêm HEX6/HEX7[6:0]. Tổng 98 chân: thêm SW5=AC26 (2.5 V) và 14 chân HEX6/7 (3.3-V LVTTL theo JP6 mặc định). Không cần dây ngoài.
