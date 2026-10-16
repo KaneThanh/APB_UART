@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version='1.0' encoding='utf-8'?>
 <mxfile host="app.diagrams.net" type="device" compressed="false" pages="17">
   <diagram id="page-01" name="01 BOARD - SYSTEM_ARCHITECTURE">
     <mxGraphModel dx="4100" dy="1700" grid="0" gridSize="20" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="4100" pageHeight="1700" math="0" shadow="0">
@@ -69,11 +69,11 @@
         <mxCell id="port-8-19" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-8-14">
           <mxGeometry x="346" y="144" width="8" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="text-8-20" value="SW [4:0]" style="text;html=0;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;fontFamily=Arial;fontSize=16;spacing=0;whiteSpace=wrap;" vertex="1" parent="block-8-14">
+        <mxCell id="text-8-20" value="SW [5:0]" style="text;html=0;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;fontFamily=Arial;fontSize=16;spacing=0;whiteSpace=wrap;" vertex="1" parent="block-8-14">
           <mxGeometry x="16" y="135" width="322" height="26" as="geometry" />
         </mxCell>
         <mxCell id="block-8-21" value="BOARD_CONTROLS" style="rounded=0;html=0;container=1;collapsible=0;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5;align=center;verticalAlign=top;spacingTop=14;fontFamily=Arial;fontSize=21;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="720" y="100" width="580" height="300" as="geometry" />
+          <mxGeometry x="720" y="100" width="580" height="315" as="geometry" />
         </mxCell>
         <mxCell id="port-8-22" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-8-21">
           <mxGeometry x="-4" y="56" width="8" height="8" as="geometry" />
@@ -96,7 +96,7 @@
         <mxCell id="port-8-28" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-8-21">
           <mxGeometry x="-4" y="188" width="8" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="text-8-29" value="SW [4:0]" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=16;spacing=0;whiteSpace=wrap;" vertex="1" parent="block-8-21">
+        <mxCell id="text-8-29" value="SW [5:0]" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=16;spacing=0;whiteSpace=wrap;" vertex="1" parent="block-8-21">
           <mxGeometry x="12" y="179" width="276.0" height="26" as="geometry" />
         </mxCell>
         <mxCell id="port-8-30" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-8-21">
@@ -130,7 +130,7 @@
           <mxGeometry x="292.0" y="223" width="276.0" height="26" as="geometry" />
         </mxCell>
         <mxCell id="block-8-40" value="APB_ECHO_MASTER_FSM" style="rounded=0;html=0;container=1;collapsible=0;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;align=center;verticalAlign=top;spacingTop=14;fontFamily=Arial;fontSize=21;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1650" y="100" width="670" height="564" as="geometry" />
+          <mxGeometry x="1650" y="100" width="670" height="579" as="geometry" />
         </mxCell>
         <mxCell id="port-8-41" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-8-40">
           <mxGeometry x="-4" y="56" width="8" height="8" as="geometry" />
@@ -351,8 +351,8 @@
         <mxCell id="text-8-113" value="rts_n" style="text;html=0;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;fontFamily=Arial;fontSize=16;spacing=0;whiteSpace=wrap;" vertex="1" parent="block-8-83">
           <mxGeometry x="342.0" y="223" width="326.0" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="block-8-114" value="HEX_LED_DISPLAY" style="rounded=0;html=0;container=1;collapsible=0;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5;align=center;verticalAlign=top;spacingTop=14;fontFamily=Arial;fontSize=21;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="720" y="980" width="580" height="344" as="geometry" />
+        <mxCell id="block-8-114" value="HEX_DISPLAY" style="rounded=0;html=0;container=1;collapsible=0;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5;align=center;verticalAlign=top;spacingTop=14;fontFamily=Arial;fontSize=21;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="720" y="980" width="580" height="403" as="geometry" />
         </mxCell>
         <mxCell id="port-8-115" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-8-114">
           <mxGeometry x="-4" y="56" width="8" height="8" as="geometry" />
@@ -409,7 +409,7 @@
           <mxGeometry x="292.0" y="267" width="276.0" height="26" as="geometry" />
         </mxCell>
         <mxCell id="block-8-133" value="HEX_LED_PINS" style="rounded=0;html=0;container=1;collapsible=0;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=1.5;align=center;verticalAlign=top;spacingTop=14;fontFamily=Arial;fontSize=21;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1650" y="1000" width="670" height="432" as="geometry" />
+          <mxGeometry x="1650" y="1000" width="670" height="491" as="geometry" />
         </mxCell>
         <mxCell id="port-8-134" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-8-133">
           <mxGeometry x="-4" y="56" width="8" height="8" as="geometry" />
@@ -633,7 +633,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="wire-8-186" value="5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=20;html=0;strokeColor=#315C86;strokeWidth=2.1;endArrow=block;endFill=1;endSize=7;fontFamily=Arial;fontSize=14;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=0.5;exitPerimeter=0;entryX=0.5;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="port-8-19" target="port-8-28">
+        <mxCell id="wire-8-186" value="6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=20;html=0;strokeColor=#315C86;strokeWidth=2.1;endArrow=block;endFill=1;endSize=7;fontFamily=Arial;fontSize=14;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=0.5;exitPerimeter=0;entryX=0.5;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="port-8-19" target="port-8-28">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="460" y="598" />
@@ -1020,16 +1020,93 @@
             </Array>
           </mxGeometry>
         </mxCell>
+        <mxCell id="mode-out" value="" vertex="1" parent="block-8-21" style="ellipse;fillColor=#ffffff;strokeColor=#506174;">
+          <mxGeometry as="geometry" x="576.0" y="276" width="8" height="8" />
+        </mxCell>
+        <mxCell id="mode-out-label" value="display_rx_mode" vertex="1" parent="block-8-21" style="text;html=0;align=right;verticalAlign=middle;fontSize=16;fontFamily=Arial;">
+          <mxGeometry as="geometry" x="290.0" y="267" width="276.0" height="26" />
+        </mxCell>
+        <mxCell id="mode-in" value="" vertex="1" parent="block-8-114" style="ellipse;fillColor=#ffffff;strokeColor=#506174;">
+          <mxGeometry as="geometry" x="-4" y="188" width="8" height="8" />
+        </mxCell>
+        <mxCell id="mode-in-label" value="display_rx_mode" vertex="1" parent="block-8-114" style="text;html=0;align=left;verticalAlign=middle;fontSize=16;fontFamily=Arial;">
+          <mxGeometry as="geometry" x="12" y="179" width="276.0" height="26" />
+        </mxCell>
+        <mxCell id="mode-wire" value="1" edge="1" parent="1" source="mode-out" target="mode-in" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="1360" y="380" />
+              <mxPoint x="1360" y="890" />
+              <mxPoint x="660" y="890" />
+              <mxPoint x="660" y="1172" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rxbyte-out" value="" vertex="1" parent="block-8-40" style="ellipse;fillColor=#ffffff;strokeColor=#506174;">
+          <mxGeometry as="geometry" x="666.0" y="540" width="8" height="8" />
+        </mxCell>
+        <mxCell id="rxbyte-out-label" value="last_rx_byte [7:0]" vertex="1" parent="block-8-40" style="text;html=0;align=right;verticalAlign=middle;fontSize=16;fontFamily=Arial;">
+          <mxGeometry as="geometry" x="335.0" y="531" width="321.0" height="26" />
+        </mxCell>
+        <mxCell id="rxbyte-in" value="" vertex="1" parent="block-8-114" style="ellipse;fillColor=#ffffff;strokeColor=#506174;">
+          <mxGeometry as="geometry" x="-4" y="232" width="8" height="8" />
+        </mxCell>
+        <mxCell id="rxbyte-in-label" value="last_rx_byte [7:0]" vertex="1" parent="block-8-114" style="text;html=0;align=left;verticalAlign=middle;fontSize=16;fontFamily=Arial;">
+          <mxGeometry as="geometry" x="12" y="223" width="276.0" height="26" />
+        </mxCell>
+        <mxCell id="rxbyte-wire" value="8" edge="1" parent="1" source="rxbyte-out" target="rxbyte-in" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="2390" y="644" />
+              <mxPoint x="2390" y="920" />
+              <mxPoint x="620" y="920" />
+              <mxPoint x="620" y="1216" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hex6-out" value="" vertex="1" parent="block-8-114" style="ellipse;fillColor=#ffffff;strokeColor=#506174;">
+          <mxGeometry as="geometry" x="576.0" y="320" width="8" height="8" />
+        </mxCell>
+        <mxCell id="hex6-out-label" value="HEX6 [6:0]" vertex="1" parent="block-8-114" style="text;html=0;align=right;verticalAlign=middle;fontSize=16;fontFamily=Arial;">
+          <mxGeometry as="geometry" x="290.0" y="311" width="276.0" height="26" />
+        </mxCell>
+        <mxCell id="hex6-in" value="" vertex="1" parent="block-8-133" style="ellipse;fillColor=#ffffff;strokeColor=#506174;">
+          <mxGeometry as="geometry" x="-4" y="408" width="8" height="8" />
+        </mxCell>
+        <mxCell id="hex6-in-label" value="HEX6 [6:0]" vertex="1" parent="block-8-133" style="text;html=0;align=left;verticalAlign=middle;fontSize=16;fontFamily=Arial;">
+          <mxGeometry as="geometry" x="12" y="399" width="321.0" height="26" />
+        </mxCell>
+        <mxCell id="hex6-wire" value="7" edge="1" parent="1" source="hex6-out" target="hex6-in" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="hex7-out" value="" vertex="1" parent="block-8-114" style="ellipse;fillColor=#ffffff;strokeColor=#506174;">
+          <mxGeometry as="geometry" x="576.0" y="364" width="8" height="8" />
+        </mxCell>
+        <mxCell id="hex7-out-label" value="HEX7 [6:0]" vertex="1" parent="block-8-114" style="text;html=0;align=right;verticalAlign=middle;fontSize=16;fontFamily=Arial;">
+          <mxGeometry as="geometry" x="290.0" y="355" width="276.0" height="26" />
+        </mxCell>
+        <mxCell id="hex7-in" value="" vertex="1" parent="block-8-133" style="ellipse;fillColor=#ffffff;strokeColor=#506174;">
+          <mxGeometry as="geometry" x="-4" y="452" width="8" height="8" />
+        </mxCell>
+        <mxCell id="hex7-in-label" value="HEX7 [6:0]" vertex="1" parent="block-8-133" style="text;html=0;align=left;verticalAlign=middle;fontSize=16;fontFamily=Arial;">
+          <mxGeometry as="geometry" x="12" y="443" width="321.0" height="26" />
+        </mxCell>
+        <mxCell id="hex7-wire" value="7" edge="1" parent="1" source="hex7-out" target="hex7-in" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="mode-note" value="SW5=0: baud on HEX5..0; HEX7/6 blank&#10;SW5=1: last_rx_byte bit7..0 on HEX7..0" vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;">
+          <mxGeometry as="geometry" x="720" y="1510" width="1000" height="80" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="page-02" name="02 BOARD - TOP_INPUT_OUTPUT">
-    <mxGraphModel dx="2300" dy="836" grid="0" gridSize="20" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="2300" pageHeight="836" math="0" shadow="0">
+    <mxGraphModel dx="2300" dy="836" grid="0" gridSize="20" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="2300" pageHeight="1000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="block-10-1" value="DE2_115_UART_TOP" style="rounded=0;html=0;container=1;collapsible=0;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=1.5;align=center;verticalAlign=top;spacingTop=14;fontFamily=Arial;fontSize=21;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="820" y="100" width="640" height="696" as="geometry" />
+          <mxGeometry x="820" y="100" width="640" height="696.0" as="geometry" />
         </mxCell>
         <mxCell id="port-10-2" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-10-1">
           <mxGeometry x="-4" y="56" width="8" height="8" as="geometry" />
@@ -1046,7 +1123,7 @@
         <mxCell id="port-10-6" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-10-1">
           <mxGeometry x="-4" y="304" width="8" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="text-10-7" value="SW [4:0]" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=16;spacing=0;whiteSpace=wrap;" vertex="1" parent="block-10-1">
+        <mxCell id="text-10-7" value="SW [5:0]" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=16;spacing=0;whiteSpace=wrap;" vertex="1" parent="block-10-1">
           <mxGeometry x="12" y="295" width="306.0" height="26" as="geometry" />
         </mxCell>
         <mxCell id="port-10-8" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-10-1">
@@ -1151,10 +1228,10 @@
         <mxCell id="port-10-41" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-10-40">
           <mxGeometry x="356" y="56" width="8" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="text-10-42" value="SW [4:0]" style="text;html=0;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;fontFamily=Arial;fontSize=16;spacing=0;whiteSpace=wrap;" vertex="1" parent="block-10-40">
+        <mxCell id="text-10-42" value="SW [5:0]" style="text;html=0;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;fontFamily=Arial;fontSize=16;spacing=0;whiteSpace=wrap;" vertex="1" parent="block-10-40">
           <mxGeometry x="16" y="47" width="332" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="wire-10-43" value="5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=20;html=0;strokeColor=#315C86;strokeWidth=2.1;endArrow=block;endFill=1;endSize=7;fontFamily=Arial;fontSize=14;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=0.5;exitPerimeter=0;entryX=0.5;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="port-10-41" target="port-10-6">
+        <mxCell id="wire-10-43" value="6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=20;html=0;strokeColor=#315C86;strokeWidth=2.1;endArrow=block;endFill=1;endSize=7;fontFamily=Arial;fontSize=14;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=0.5;exitPerimeter=0;entryX=0.5;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="port-10-41" target="port-10-6">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="block-10-44" value="RS232_ZT3232" style="rounded=0;html=0;container=1;collapsible=0;fillColor=#F5F5F5;strokeColor=#9E9E9E;strokeWidth=1.5;align=center;verticalAlign=top;spacingTop=14;fontFamily=Arial;fontSize=21;fontStyle=1;" vertex="1" parent="1">
@@ -1200,7 +1277,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="block-10-58" value="BOARD_HEX" style="rounded=0;html=0;container=1;collapsible=0;fillColor=#F5F5F5;strokeColor=#9E9E9E;strokeWidth=1.5;align=center;verticalAlign=top;spacingTop=14;fontFamily=Arial;fontSize=21;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1860" y="268" width="360" height="310" as="geometry" />
+          <mxGeometry x="1860" y="268" width="360" height="403" as="geometry" />
         </mxCell>
         <mxCell id="port-10-59" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-10-58">
           <mxGeometry x="-4" y="56" width="8" height="8" as="geometry" />
@@ -1257,7 +1334,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="block-10-77" value="BOARD_LED" style="rounded=0;html=0;container=1;collapsible=0;fillColor=#F5F5F5;strokeColor=#9E9E9E;strokeWidth=1.5;align=center;verticalAlign=top;spacingTop=14;fontFamily=Arial;fontSize=21;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1860" y="612" width="360" height="134" as="geometry" />
+          <mxGeometry x="1860" y="720" width="360" height="134" as="geometry" />
         </mxCell>
         <mxCell id="port-10-78" value="" style="ellipse;perimeter=ellipsePerimeter;fillColor=#FFFFFF;strokeColor=#506174;strokeWidth=1.2;html=0;" vertex="1" parent="block-10-77">
           <mxGeometry x="-4" y="56" width="8" height="8" as="geometry" />
@@ -1276,6 +1353,39 @@
         </mxCell>
         <mxCell id="wire-10-83" value="18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=20;html=0;strokeColor=#315C86;strokeWidth=2.1;endArrow=block;endFill=1;endSize=7;fontFamily=Arial;fontSize=14;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=0.5;exitPerimeter=0;entryX=0.5;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="port-10-30" target="port-10-80">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="top-hex6" value="" vertex="1" parent="block-10-1" style="ellipse;fillColor=#ffffff;strokeColor=#506174;">
+          <mxGeometry as="geometry" x="636.0" y="488" width="8" height="8" />
+        </mxCell>
+        <mxCell id="top-hex6-label" value="HEX6 [6:0]" vertex="1" parent="block-10-1" style="text;html=0;align=right;verticalAlign=middle;fontSize=16;fontFamily=Arial;">
+          <mxGeometry as="geometry" x="320.0" y="479" width="306.0" height="26" />
+        </mxCell>
+        <mxCell id="board-hex6" value="" vertex="1" parent="block-10-58" style="ellipse;fillColor=#ffffff;strokeColor=#506174;">
+          <mxGeometry as="geometry" x="-4" y="320" width="8" height="8" />
+        </mxCell>
+        <mxCell id="board-hex6-label" value="HEX6 [6:0]" vertex="1" parent="block-10-58" style="text;html=0;align=left;verticalAlign=middle;fontSize=16;fontFamily=Arial;">
+          <mxGeometry as="geometry" x="12" y="311" width="166.0" height="26" />
+        </mxCell>
+        <mxCell id="top-hex6-wire" value="7" edge="1" parent="1" source="top-hex6" target="board-hex6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="top-hex7" value="" vertex="1" parent="block-10-1" style="ellipse;fillColor=#ffffff;strokeColor=#506174;">
+          <mxGeometry as="geometry" x="636.0" y="532" width="8" height="8" />
+        </mxCell>
+        <mxCell id="top-hex7-label" value="HEX7 [6:0]" vertex="1" parent="block-10-1" style="text;html=0;align=right;verticalAlign=middle;fontSize=16;fontFamily=Arial;">
+          <mxGeometry as="geometry" x="320.0" y="523" width="306.0" height="26" />
+        </mxCell>
+        <mxCell id="board-hex7" value="" vertex="1" parent="block-10-58" style="ellipse;fillColor=#ffffff;strokeColor=#506174;">
+          <mxGeometry as="geometry" x="-4" y="364" width="8" height="8" />
+        </mxCell>
+        <mxCell id="board-hex7-label" value="HEX7 [6:0]" vertex="1" parent="block-10-58" style="text;html=0;align=left;verticalAlign=middle;fontSize=16;fontFamily=Arial;">
+          <mxGeometry as="geometry" x="12" y="355" width="166.0" height="26" />
+        </mxCell>
+        <mxCell id="top-hex7-wire" value="7" edge="1" parent="1" source="top-hex7" target="board-hex7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="top-mode-note" value="SW[4:0]: UART CFG&#10;SW5: HEX mode (0 baud / 1 RX byte)&#10;98 assigned I/O pins" vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;">
+          <mxGeometry as="geometry" x="80" y="680" width="600" height="100" />
         </mxCell>
       </root>
     </mxGraphModel>
@@ -6255,7 +6365,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="master-flow-14" name="14 MASTER - BOARD_CONTROLS_AUTO">
-    <mxGraphModel dx="719" dy="796" grid="0" page="0" pageWidth="719" pageHeight="796" math="0" shadow="0">
+    <mxGraphModel dx="719" dy="796" grid="0" page="0" pageWidth="1200" pageHeight="796" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -6265,7 +6375,7 @@
         <mxCell id="sync" value="Đồng bộ 2FF KEY/SW; debounce 10ms" vertex="1" parent="1" style="rounded=1;html=0;whiteSpace=wrap;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
           <mxGeometry x="396.0512" y="162.79999999999995" width="230.0976" height="36.0" as="geometry" />
         </mxCell>
-        <mxCell id="sw" value="SW ổn định lần đầu hoặc đổi?" vertex="1" parent="1" style="rhombus;html=0;whiteSpace=wrap;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
+        <mxCell id="sw" value="SW[4:0] ổn định lần đầu hoặc đổi?" vertex="1" parent="1" style="rhombus;html=0;whiteSpace=wrap;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
           <mxGeometry x="113.25000000000003" y="235.79999999999998" width="353.7" height="55.800000000000004" as="geometry" />
         </mxCell>
         <mxCell id="cfg" value="pending_cfg={SW3,SW2,SW4,SW1,SW0}&#10;cfg_req pulse 1 clock" vertex="1" parent="1" style="rounded=1;html=0;whiteSpace=wrap;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
@@ -6506,8 +6616,23 @@
         <mxCell id="label-11" vertex="1" parent="1" value="Lặp" style="text;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=none;fontFamily=Arial;fontSize=10;align=center;verticalAlign=middle;">
           <mxGeometry x="583.98" y="442.9" width="32" height="28" as="geometry" />
         </mxCell>
-        <mxCell id="title" vertex="1" parent="1" value="01 BOARD_CONTROLS — Auto CFG / Baud / Report" style="text;html=0;strokeColor=none;fillColor=none;fontFamily=Arial;fontSize=18;fontStyle=1;align=center;">
+        <mxCell id="title" vertex="1" parent="1" value="14 BOARD_CONTROLS — Auto CFG / Baud / Report" style="text;html=0;strokeColor=none;fillColor=none;fontFamily=Arial;fontSize=18;fontStyle=1;align=center;">
           <mxGeometry x="40" y="40" width="639.11" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="mode-sync" value="SW5 → 2 FF synchronizer&#10;Debounce riêng 10 ms" vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;">
+          <mxGeometry as="geometry" x="800" y="160" width="320" height="75" />
+        </mxCell>
+        <mxCell id="mode-update" value="display_rx_mode &lt;= mode_sync&#10;Không phát cfg_req / baud_req" vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;">
+          <mxGeometry as="geometry" x="800" y="290" width="320" height="75" />
+        </mxCell>
+        <mxCell id="mode-dest" value="HEX_DISPLAY&#10;0: baud; 1: last_rx_byte" vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;">
+          <mxGeometry as="geometry" x="800" y="420" width="320" height="75" />
+        </mxCell>
+        <mxCell id="mode-flow1" value="Ổn định" edge="1" parent="1" source="mode-sync" target="mode-update" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="mode-flow2" value="1 bit" edge="1" parent="1" source="mode-update" target="mode-dest" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
       </root>
     </mxGraphModel>
@@ -6517,13 +6642,13 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="boot" value="Boot: drain RX cũ; đợi CFG_SAFE&#10;ghi/verify8N1; đọc baud reset" vertex="1" parent="1" style="ellipse;html=0;whiteSpace=wrap;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
+        <mxCell id="boot" value="Boot: drain RX cũ → last_rx_byte&#10;Đợi CFG_SAFE; ghi/verify 8N1&#10;Đọc baud reset" vertex="1" parent="1" style="ellipse;html=0;whiteSpace=wrap;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
           <mxGeometry x="175.0068" y="68.25588000000009" width="289.3464" height="58.54823999999999" as="geometry" />
         </mxCell>
         <mxCell id="req" value="Có CFG/Baud/Report chờ?" vertex="1" parent="1" style="rhombus;html=0;whiteSpace=wrap;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
           <mxGeometry x="154.8288" y="162.80000000000004" width="329.7024" height="55.800000000000004" as="geometry" />
         </mxCell>
-        <mxCell id="service" value="Phục vụ yêu cầu: trang03/04&#10;CFG/Baud ưu tiên trước Report" vertex="1" parent="1" style="rounded=1;html=0;whiteSpace=wrap;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
+        <mxCell id="service" value="Phục vụ yêu cầu: trang 16/17&#10;CFG/Baud ưu tiên trước Report" vertex="1" parent="1" style="rounded=1;html=0;whiteSpace=wrap;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
           <mxGeometry x="39.99940000000001" y="266.6000000000001" width="187.3512" height="41.4" as="geometry" />
         </mxCell>
         <mxCell id="status" value="Đọc STATUS; cập nhật LEDG" vertex="1" parent="1" style="rounded=1;html=0;whiteSpace=wrap;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
@@ -6532,8 +6657,8 @@
         <mxCell id="valid" value="RX valid?" vertex="1" parent="1" style="rhombus;html=0;whiteSpace=wrap;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
           <mxGeometry x="429.8312" y="345.00000000000006" width="143.6976" height="55.800000000000004" as="geometry" />
         </mxCell>
-        <mxCell id="meta" value="Đọc EXT_STATUS rồi RX_DATA pop&#10;Chốt parity/frame metadata" vertex="1" parent="1" style="rounded=1;html=0;whiteSpace=wrap;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
-          <mxGeometry x="553.1211999999999" y="448.80000000000007" width="221.0976" height="41.4" as="geometry" />
+        <mxCell id="meta" value="Đọc EXT_STATUS rồi RX_DATA pop&#10;last_rx_byte &lt;= response_data[7:0]&#10;Chốt parity/frame metadata" vertex="1" parent="1" style="rounded=1;html=0;whiteSpace=wrap;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
+          <mxGeometry x="553.1211999999999" y="448.80000000000007" width="221.0976" height="60" as="geometry" />
         </mxCell>
         <mxCell id="bad" value="Parity/frame bad?" vertex="1" parent="1" style="rhombus;html=0;whiteSpace=wrap;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
           <mxGeometry x="449.0712" y="527.2" width="229.1976" height="55.800000000000004" as="geometry" />
@@ -6679,19 +6804,9 @@
         <mxCell id="label-7" vertex="1" parent="1" value="Không" style="text;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=none;fontFamily=Arial;fontSize=10;align=center;verticalAlign=middle;">
           <mxGeometry x="454.675" y="410.80000000000007" width="39.75" height="28" as="geometry" />
         </mxCell>
-        <mxCell id="edge-8" edge="1" parent="1" source="meta" target="bad" style="edgeStyle=none;rounded=0;html=0;strokeColor=#52657E;strokeWidth=1.3;endArrow=block;endFill=1;endSize=7;exitX=0.39167679793901017;exitY=1.0077294685990332;exitPerimeter=0;entryX=0.6097742733780811;entryY=0.10519713261648753;entryPerimeter=0;">
+        <mxCell id="edge-8" edge="1" parent="1" source="meta" target="bad" style="edgeStyle=orthogonalEdgeStyle;html=0;endArrow=block;exitX=0.5;exitY=1;entryX=0.7;entryY=0;strokeColor=#52657E;">
           <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="634.667265625" y="494.74623046875" />
-              <mxPoint x="629.369375" y="499.17671875" />
-              <mxPoint x="623.890546875" y="503.7579101562501" />
-              <mxPoint x="618.295" y="508.43625000000003" />
-              <mxPoint x="612.646953125" y="513.15818359375" />
-              <mxPoint x="607.010625" y="517.87015625" />
-              <mxPoint x="601.4502343749999" y="522.51861328125" />
-              <mxPoint x="596.03" y="527.0500000000001" />
-            </Array>
-          </mxGeometry>
+            </mxGeometry>
         </mxCell>
         <mxCell id="edge-9" edge="1" parent="1" source="bad" target="req" style="edgeStyle=none;rounded=0;html=0;strokeColor=#52657E;strokeWidth=1.3;endArrow=block;endFill=1;endSize=7;exitX=0.14175017539450688;exitY=0.34928315412186395;exitPerimeter=0;entryX=0.4399155116856899;entryY=0.9413978494623655;entryPerimeter=0;">
           <mxGeometry relative="1" as="geometry">
@@ -6829,7 +6944,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="title" vertex="1" parent="1" value="02 APB MASTER — Boot / Poll / Echo" style="text;html=0;strokeColor=none;fillColor=none;fontFamily=Arial;fontSize=18;fontStyle=1;align=center;">
+        <mxCell id="title" vertex="1" parent="1" value="15 APB MASTER — Boot / Poll / Echo" style="text;html=0;strokeColor=none;fillColor=none;fontFamily=Arial;fontSize=18;fontStyle=1;align=center;">
           <mxGeometry x="40" y="40" width="792.67" height="28" as="geometry" />
         </mxCell>
       </root>
@@ -6864,7 +6979,7 @@
         <mxCell id="verify" value="Đọc lại CFG và BAUD_SEL&#10;Khớp cả hai?" vertex="1" parent="1" style="rhombus;html=0;whiteSpace=wrap;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
           <mxGeometry x="210.3312" y="624.2" width="337.1976" height="82.8" as="geometry" />
         </mxCell>
-        <mxCell id="active" value="Cập nhật active_cfg/active_baud&#10;HEX hiển thị baud đã xác nhận" vertex="1" parent="1" style="rounded=1;html=0;whiteSpace=wrap;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
+        <mxCell id="active" value="Cập nhật active_cfg/active_baud&#10;HEX đổi baud khi SW5=0" vertex="1" parent="1" style="rounded=1;html=0;whiteSpace=wrap;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
           <mxGeometry x="182.0044" y="763.5799999999999" width="191.8512" height="41.4" as="geometry" />
         </mxCell>
         <mxCell id="release" value="Ghi FLOW_CTRL.pause=0&#10;Tự quay lại polling / yêu cầu kế" vertex="1" parent="1" style="rounded=1;html=0;whiteSpace=wrap;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=1.4;fontFamily=Arial;fontSize=12;align=center;verticalAlign=middle;spacing=6;">
@@ -7083,7 +7198,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="title" vertex="1" parent="1" value="03 AUTO CONFIG — Không nút Apply / Resume" style="text;html=0;strokeColor=none;fillColor=none;fontFamily=Arial;fontSize=18;fontStyle=1;align=center;">
+        <mxCell id="title" vertex="1" parent="1" value="16 AUTO CONFIG — Không nút Apply / Resume" style="text;html=0;strokeColor=none;fillColor=none;fontFamily=Arial;fontSize=18;fontStyle=1;align=center;">
           <mxGeometry x="40" y="40" width="519.31" height="28" as="geometry" />
         </mxCell>
       </root>
@@ -7312,8 +7427,64 @@
         <mxCell id="label-11" vertex="1" parent="1" value="Đủ" style="text;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=none;fontFamily=Arial;fontSize=10;align=center;verticalAlign=middle;">
           <mxGeometry x="444.45" y="804.452" width="32" height="28" as="geometry" />
         </mxCell>
-        <mxCell id="title" vertex="1" parent="1" value="04 KEY3 — STATUS rồi EXT_STATUS dạng bit" style="text;html=0;strokeColor=none;fillColor=none;fontFamily=Arial;fontSize=18;fontStyle=1;align=center;">
+        <mxCell id="title" vertex="1" parent="1" value="17 KEY3 — STATUS rồi EXT_STATUS dạng bit" style="text;html=0;strokeColor=none;fillColor=none;fontFamily=Arial;fontSize=18;fontStyle=1;align=center;">
           <mxGeometry x="40" y="40" width="584.3" height="28" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="display-mode-18" name="18 BOARD - RX_BYTE_DISPLAY">
+    <mxGraphModel page="1" pageWidth="1500" pageHeight="1100" grid="1" gridSize="10">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="HEX DISPLAY — Baud / Last RX Byte" vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=24;fontStyle=1;">
+          <mxGeometry as="geometry" x="50" y="20" width="1350" height="60" />
+        </mxCell>
+        <mxCell id="rx" value="UART RX_DATA&#10;APB response_data[7:0]" vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;">
+          <mxGeometry as="geometry" x="60" y="170" width="330" height="90" />
+        </mxCell>
+        <mxCell id="last" value="APB_ECHO_MASTER&#10;last_rx_byte [7:0]&#10;Latch on successful RX_DATA read" vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;">
+          <mxGeometry as="geometry" x="490" y="170" width="400" height="90" />
+        </mxCell>
+        <mxCell id="ui" value="BOARD_CONTROLS&#10;SW5 → 2FF → debounce&#10;display_rx_mode [1]" vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;">
+          <mxGeometry as="geometry" x="60" y="400" width="330" height="100" />
+        </mxCell>
+        <mxCell id="baud" value="APB_ECHO_MASTER&#10;active_baud_index [3:0]" vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;">
+          <mxGeometry as="geometry" x="60" y="650" width="330" height="90" />
+        </mxCell>
+        <mxCell id="mux" value="HEX_DISPLAY&#10;Mode select + seven-segment decode&#10;Registered outputs (clk / reset_n)" vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;">
+          <mxGeometry as="geometry" x="990" y="400" width="400" height="130" />
+        </mxCell>
+        <mxCell id="pins" value="HEX7 .. HEX0 [7 bits each]&#10;0: blank blank + 6 baud digits&#10;1: bit7 bit6 bit5 bit4 bit3 bit2 bit1 bit0" vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;">
+          <mxGeometry as="geometry" x="990" y="710" width="400" height="120" />
+        </mxCell>
+        <mxCell id="rx-last" value="8" edge="1" parent="1" source="rx" target="last" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="last-mux" value="last_rx_byte [8]" edge="1" parent="1" source="last" target="mux" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="1190" y="215" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mode-mux" value="display_rx_mode [1]" edge="1" parent="1" source="ui" target="mux" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="baud-mux" value="active_baud_index [4]" edge="1" parent="1" source="baud" target="mux" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="740" y="695" />
+              <mxPoint x="740" y="505" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mux-pins" value="HEX0..HEX7: 8 × 7 bits" edge="1" parent="1" source="mux" target="pins" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#337799;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="note" value="Reset: last_rx_byte = 0. Retain after RX pop; report TX does not overwrite.&#10;Parity/frame-bad word is displayed, but discarded by echo.&#10;5/6/7-bit RX: upper bits are zero. Display changes only after APB RX read.&#10;SW5 changes display only; no APB reconfiguration or RX pause." vertex="1" parent="1" style="rounded=0;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fillColor=#DAE8FC;strokeColor=#6C8EBF;fillColor=#FFF2CC;strokeColor=#D6B656;">
+          <mxGeometry as="geometry" x="60" y="860" width="1330" height="130" />
         </mxCell>
       </root>
     </mxGraphModel>
