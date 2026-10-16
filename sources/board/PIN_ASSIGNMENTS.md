@@ -1,14 +1,14 @@
 # Pin assignments UART APB — DE2-115
 
-Cập nhật 14/10/2026. Device `EP4CE115F29C7`, top `de2_115_uart_top`.
+Cập nhật 15/10/2026. Device `EP4CE115F29C7`, top `de2_115_uart_top`.
 
-Hai QSF [tại đây](uart.qsf) và [bản tương ứng](../../Quartus/UART_protocol.qsf) có cùng **83 location assignments và 83 I/O-standard assignments**. Đã đối chiếu với toàn bộ bit của cổng RTL: không thiếu, không thừa, không trùng chân vật lý.
+Hai QSF [tại đây](uart.qsf) và [bản tương ứng](../../Quartus/UART_protocol.qsf) có cùng **98 location assignments và 98 I/O-standard assignments**. Đã đối chiếu với toàn bộ bit của cổng RTL: không thiếu, không thừa, không trùng chân vật lý.
 
 ## Chức năng mới
 
 - KEY0 reset, KEY1 tăng baud và tự áp dụng, KEY2 để trống, KEY3 gửi STATUS rồi EXT_STATUS dạng hai dòng 32 ký tự `0/1`.
 - SW[4:0] tự cấu hình sau sync/debounce; không có nút Apply/Pause/Resume.
-- HEX5..HEX0 hiển thị baud active; HEX0 là hàng đơn vị.
+- SW5=0: HEX5..0 hiển thị baud active, HEX7/6 tắt. SW5=1: HEX7..0 hiển thị bit7..0 của byte RX gần nhất.
 - LEDG[8:0] = STATUS[8:0]; LEDR[17:0] = EXT_STATUS[17:0]. Bit bằng 1 thì LED sáng. Không còn cổng LED[1:0] pending/error.
 - UART_RXD → RX; UART_RTS → CTS_n (input FPGA); UART_TXD ← TX; UART_CTS ← RTS_n (output FPGA).
 
@@ -107,3 +107,18 @@ Pinout theo [Terasic DE2-115 User Manual](https://www.terasic.com.tw/attachment/
 ## Giới hạn kiểm chứng
 
 Đã kiểm tra mapping QSF với RTL và hai bản QSF khớp nhau. Cảnh báo KEY2 không điều khiển logic là đúng yêu cầu. Drive strength/slew và constraint I/O/reset vẫn cần review; không coi kiểm tra pin là timing sign-off hay kiểm chứng board vật lý.
+| `SW[5]` | `PIN_AC26` | 2.5 V |
+| `HEX6[0]` | `PIN_AA17` | 3.3-V LVTTL |
+| `HEX6[1]` | `PIN_AB16` | 3.3-V LVTTL |
+| `HEX6[2]` | `PIN_AA16` | 3.3-V LVTTL |
+| `HEX6[3]` | `PIN_AB17` | 3.3-V LVTTL |
+| `HEX6[4]` | `PIN_AB15` | 3.3-V LVTTL |
+| `HEX6[5]` | `PIN_AA15` | 3.3-V LVTTL |
+| `HEX6[6]` | `PIN_AC17` | 3.3-V LVTTL |
+| `HEX7[0]` | `PIN_AD17` | 3.3-V LVTTL |
+| `HEX7[1]` | `PIN_AE17` | 3.3-V LVTTL |
+| `HEX7[2]` | `PIN_AG17` | 3.3-V LVTTL |
+| `HEX7[3]` | `PIN_AH17` | 3.3-V LVTTL |
+| `HEX7[4]` | `PIN_AF17` | 3.3-V LVTTL |
+| `HEX7[5]` | `PIN_AG18` | 3.3-V LVTTL |
+| `HEX7[6]` | `PIN_AA14` | 3.3-V LVTTL |

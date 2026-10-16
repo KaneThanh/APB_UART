@@ -5,7 +5,7 @@ module de2_115_uart_top #(
 ) (
   input wire CLOCK_50,
   input wire [3:0] KEY,
-  input wire [4:0] SW,
+  input wire [5:0] SW,
   input wire UART_RXD,
   input wire UART_RTS,
   output wire UART_TXD,
@@ -16,6 +16,8 @@ module de2_115_uart_top #(
   output wire [6:0] HEX3,
   output wire [6:0] HEX4,
   output wire [6:0] HEX5,
+  output wire [6:0] HEX6,
+  output wire [6:0] HEX7,
   output wire [8:0] LEDG,
   output wire [17:0] LEDR
 );
@@ -25,6 +27,8 @@ module de2_115_uart_top #(
   wire [4:0] pending_cfg;
   wire [3:0] pending_baud_index;
   wire [3:0] active_baud_index;
+  wire display_rx_mode;
+  wire [7:0] last_rx_byte;
   wire cfg_req;
   wire baud_req, report_req;
   wire [31:0] status_snapshot, ext_status_snapshot;
@@ -57,7 +61,8 @@ module de2_115_uart_top #(
     .pending_cfg(pending_cfg),
     .cfg_req(cfg_req),
     .baud_req(baud_req),
-    .report_req(report_req)
+    .report_req(report_req),
+    .display_rx_mode(display_rx_mode)
   );
   apb_echo_master u_master (
     .clk(clk),
@@ -77,6 +82,7 @@ module de2_115_uart_top #(
     .pwdata(pwdata),
     .pstrb(pstrb),
     .active_baud_index(active_baud_index),
+    .last_rx_byte(last_rx_byte),
     .status_snapshot(status_snapshot),
     .ext_status_snapshot(ext_status_snapshot),
     .error(error),
@@ -100,6 +106,8 @@ module de2_115_uart_top #(
     .rts_n(UART_CTS)
   );
   hex_display u_display (
+    .display_rx_mode(display_rx_mode),
+    .last_rx_byte(last_rx_byte),
     .clk(clk),
     .reset_n(reset_n),
     .active_baud_index(active_baud_index),
@@ -108,7 +116,9 @@ module de2_115_uart_top #(
     .HEX2(HEX2),
     .HEX3(HEX3),
     .HEX4(HEX4),
-    .HEX5(HEX5)
+    .HEX5(HEX5),
+    .HEX6(HEX6),
+    .HEX7(HEX7)
   );
 endmodule
 

@@ -2,12 +2,16 @@ module hex_display (
   input wire clk,
   input wire reset_n,
   input wire [3:0] active_baud_index,
+  input wire display_rx_mode,
+  input wire [7:0] last_rx_byte,
   output reg [6:0] HEX0,
   output reg [6:0] HEX1,
   output reg [6:0] HEX2,
   output reg [6:0] HEX3,
   output reg [6:0] HEX4,
-  output reg [6:0] HEX5
+  output reg [6:0] HEX5,
+  output reg [6:0] HEX6,
+  output reg [6:0] HEX7
 );
   function [6:0] seven;
     input [3:0] digit;
@@ -30,8 +34,14 @@ module hex_display (
     endcase
   end
   always @(posedge clk or negedge reset_n)
-    if (!reset_n) begin HEX0<=127; HEX1<=127; HEX2<=127; HEX3<=127; HEX4<=127; HEX5<=127; end
-    else begin
+    if (!reset_n) begin HEX0<=127; HEX1<=127; HEX2<=127; HEX3<=127; HEX4<=127; HEX5<=127; HEX6<=127; HEX7<=127; end
+    else if (display_rx_mode) begin
+      HEX0<=seven({3'b0,last_rx_byte[0]}); HEX1<=seven({3'b0,last_rx_byte[1]});
+      HEX2<=seven({3'b0,last_rx_byte[2]}); HEX3<=seven({3'b0,last_rx_byte[3]});
+      HEX4<=seven({3'b0,last_rx_byte[4]}); HEX5<=seven({3'b0,last_rx_byte[5]});
+      HEX6<=seven({3'b0,last_rx_byte[6]}); HEX7<=seven({3'b0,last_rx_byte[7]});
+    end else begin
+      HEX6<=127; HEX7<=127;
       HEX0<=seven(bcd[3:0]); HEX1<=seven(bcd[7:4]); HEX2<=seven(bcd[11:8]);
       HEX3<=seven(bcd[15:12]); HEX4<=seven(bcd[19:16]); HEX5<=seven(bcd[23:20]);
     end

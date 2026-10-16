@@ -6,11 +6,12 @@ module board_controls #(
   input wire clk,
   input wire reset_n,
   input wire [3:0] KEY,
-  input wire [4:0] SW,
+  input wire [5:0] SW,
   output reg [3:0] pending_baud_index,
   output reg [4:0] pending_cfg,
   output reg cfg_req,
   output reg baud_req,
+  output reg display_rx_mode,
   output reg report_req
 );
   `include "uart_functions.vh"
@@ -19,6 +20,9 @@ module board_controls #(
   reg [2:0] key_meta, key_sync;
   (* altera_attribute="-name SYNCHRONIZER_IDENTIFICATION FORCED" *)
   reg [4:0] sw_meta, sw_sync;
+  (* altera_attribute="-name SYNCHRONIZER_IDENTIFICATION FORCED" *)
+  reg mode_meta, mode_sync;
+  reg [CW-1:0] mode_count;
   reg [2:0] key_stable;
   reg [2:0] press;
   reg [4:0] sw_candidate;
@@ -30,7 +34,17 @@ module board_controls #(
   integer i, k;
   always @(posedge clk or negedge reset_n)
     if (!reset_n) begin key_meta<=7; key_sync<=7; sw_meta<=0; sw_sync<=0; end
-    else begin key_meta<=KEY[3:1]; key_sync<=key_meta; sw_meta<=SW; sw_sync<=sw_meta; end
+    else begin key_meta<=KEY[3:1]; key_sync<=key_meta; sw_meta<=SW[4:0]; sw_sync<=sw_meta; end
+  always @(posedge clk or negedge reset_n)
+    if (!reset_n) begin
+      mode_meta<=0; mode_sync<=0; mode_count<=0; display_rx_mode<=0;
+    end else begin
+      mode_meta<=SW[5]; mode_sync<=mode_meta;
+      if (mode_sync==display_rx_mode) mode_count<=0;
+      else if (mode_count==DEBOUNCE_LAST) begin
+        display_rx_mode<=mode_sync; mode_count<=0;
+      end else mode_count<=mode_count+1'b1;
+    end
   always @* begin
     press=0;
     for (k=0;k<3;k=k+1)
