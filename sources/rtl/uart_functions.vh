@@ -9,6 +9,7 @@ function [17:0] baud_value;
     endcase
   end
 endfunction
+
 function [3:0] baud_index;
   input integer baud;
   begin
@@ -20,6 +21,7 @@ function [3:0] baud_index;
     endcase
   end
 endfunction
+
 function integer uart_clog2;
   input integer value;
   integer remaining;
